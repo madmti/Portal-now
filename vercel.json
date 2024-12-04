@@ -3,7 +3,8 @@
 		"deploymentEnabled": {
 			"main": true,
 			"preview": true,
-			"dev": false
+			"dev": false,
+			"feat/*": false
 		}
 	}
 }
