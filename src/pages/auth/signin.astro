@@ -1,0 +1,78 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { app } from '../../firebase/server';
+import { getAuth } from 'firebase-admin/auth';
+import SignInGoogle from '../../components/SignInGoogle';
+import SignInGithub from '../../components/SignInGithub';
+import SignInEmail from '../../components/SignInEmail';
+
+const auth = getAuth(app);
+if (Astro.cookies.has('__session')) {
+	const sessionCookie = Astro.cookies.get('__session')?.value;
+	const decodedCookie = await auth.verifySessionCookie(`${sessionCookie}`);
+	if (decodedCookie) {
+		return Astro.redirect('/home/dashboard');
+	}
+}
+---
+
+<Layout>
+	<a href="/" class="max-sm:hidden btn btn-lg btn-outline absolute left-5 top-5"
+		><span class="icon-[icon-park-outline--return]"></span></a
+	>
+	<main class="w-full h-full grid place-items-center">
+		<form
+			id="loginForm"
+			method="post"
+			class="mx-auto flex w-full max-w-lg flex-col rounded-xl sm:border border-border bg-backgroundSecondary p-4 sm:p-20"
+		>
+			<div class="flex w-full flex-col gap-2">
+				<p>Inicia sesion con</p>
+				<div class="flex w-full flex-col gap-2">
+					<SignInGoogle client:only="preact" />
+					<SignInGithub client:only="preact" />
+				</div>
+			</div>
+			<div class="divider my-6 text-xs">o continua con</div>
+
+			<div class="flex flex-col gap-4">
+				<div class="flex flex-col gap-2">
+					<label class="text-base" for="email">Correo</label>
+					<input
+						placeholder="Ingresa tu correo aqui"
+						type="email"
+						name="email"
+						id="email"
+						class="input input-bordered hover:input-primary max-w-full"
+						autocomplete="email"
+						required
+					/>
+				</div>
+				<div class="flex flex-col gap-2">
+					<label class="text-base">
+						<span>Contraseña</span>
+					</label>
+					<input
+						placeholder="Ingresa tu contraseña aqui"
+						type="password"
+						name="password"
+						id="password"
+						class="input input-bordered hover:input-primary max-w-full"
+						autocomplete="current-password"
+						required
+					/>
+				</div>
+				<a href="/auth/forgot-password" class="link link-primary text-sm">
+					Olvidaste tu contraseña?
+				</a>
+				<div class="pt-5">
+					<SignInEmail client:only="preact" />
+				</div>
+
+				<a href="/auth/register/" class="link link-primary text-sm">
+					Aun no tienes cuenta? Registrate aqui
+				</a>
+			</div>
+		</form>
+	</main>
+</Layout>

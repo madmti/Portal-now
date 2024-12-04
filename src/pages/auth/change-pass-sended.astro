@@ -1,0 +1,19 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout>
+	<main
+		class="p-4 w-full h-full flex flex-col items-center justify-center gap-4"
+	>
+		<span
+			class="icon-[streamline--send-email-solid] fixed z-[-1] text-neutral text-[80vw] max-w-[200px]"
+		></span>
+		<h1 class="text-4xl">¡Revisa tu correo y cambia tu contraseña!</h1>
+		<small class="text-base text-gray-500"
+			>Puedes cerrar esta pesataña tranquilamente o inicia sesion despues de
+			haber cambiado tu contraseña</small
+		>
+		<a class="btn btn-primary" href="/auth/signin/">Iniciar sesion</a>
+	</main>
+</Layout>

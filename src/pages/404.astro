@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+	<main
+		class="p-8 w-full h-full flex max-[864px]:flex-col flex-wrap justify-center items-center"
+	>
+		<img src="/404.svg" alt="Error 404 art" class="h-[40%]" />
+		<div class="flex flex-col gap-4">
+			<h1 class="text-4xl">Pagina no encontrada 😶‍🌫️</h1>
+			<nav class="w-full grid sm:grid-cols-2 gap-2">
+				<a href="/" class="btn btn-primary">Pagina principal</a>
+				<a href="/home/dashboard/" class="btn btn-outline btn-primary">Dashboard</a>
+			</nav>
+		</div>
+	</main>
+</Layout>

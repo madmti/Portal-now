@@ -1,11 +1,102 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import type { MarkdownInstance } from 'astro';
 import Layout from '../layouts/Layout.astro';
+import LogoutBtn from '../components/LogoutBtn.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+interface ReleaseNote {
+	title: string;
+	date: string;
+}
+const releaseNotes: MarkdownInstance<ReleaseNote>[] = Object.values(
+	import.meta.glob('../assets/updates/*.md', { eager: true })
+);
+releaseNotes.reverse();
 ---
 
 <Layout>
-	<Welcome />
+	<header
+		class="p-4 bg-neutral w-full flex items-center justify-between flex-wrap gap-4 fixed z-10"
+	>
+		<div class="text-3xl gap-2 flex items-center w-max">
+			<span class="icon-[game-icons--portal] text-primary"></span>
+			<h1 class="max-[545px]:hidden w-max">PORTAL now</h1>
+		</div>
+		<nav class="flex gap-2 justify-end">
+			<a href="/" class="btn btn-outline btn-info">Documentacion</a>
+		</nav>
+	</header>
+	<main>
+		<section class="hero bg-base-200 min-h-screen">
+			<div class="hero-content text-center">
+				<div class="max-w-md">
+					<h1 class="text-5xl font-bold">Comenzemos</h1>
+					<p class="py-6">
+						PORTAL now es una plataforma donde puedes gestionar tus ramos,
+						evaluaciones y horarios de manera sencilla.
+					</p>
+					<nav class="flex gap-2 justify-center items-center">
+						<a href="/auth/signin/" class="btn btn-primary">Iniciar sesion</a>
+						<a href="/auth/register/" class="btn btn-outline">Registrarse</a>
+					</nav>
+				</div>
+			</div>
+		</section>
+		<section class="p-6 w-full">
+			<h2 class="text-4xl">Acerca de</h2>
+			<article class="flex flex-col items-center m-14">
+				<h3 class="text-xl w-fit">¿Qué es PORTAL now?</h3>
+				<p class="max-w-[80ch] mt-4">
+					Es un panel donde encontrarás lo necesario para llevar un seguimiento
+					de tus estudios en la universidad. Además de información relevante
+					para tu día a día como estudiante.
+				</p>
+			</article>
+			<article class="flex flex-col items-center m-14">
+				<h3 class="text-xl w-fit">¿Quiénes están detrás del proyecto?</h3>
+				<p class="max-w-[80ch] mt-4">
+					Soy un estudiante de la UTFSM que quiso construir una página donde se
+					puedan encontrar las cosas más comunes a buscar en tu día a día como
+					universitario de forma rápida y sencilla.
+				</p>
+			</article>
+			<article class="flex flex-col items-center m-14">
+				<h3 class="text-xl w-fit">Comunidad y Proyecto</h3>
+				<p class="max-w-[80ch] mt-4">
+					Este proyecto está pensado para que pueda ser construido por una
+					comunidad de estudiantes universitarios y está abierto para que puedan
+					dar ideas y trabajar en features.
+				</p>
+			</article>
+		</section>
+		<section class="p-6">
+			<h2 class="text-4xl mb-4">Versiones y Actualización</h2>
+			<ul class="sm:m-0 md:m-10 lg:m-10">
+				{releaseNotes.map((note) => <note.Content />)}
+			</ul>
+		</section>
+	</main>
+	<footer class="footer footer-center bg-primary text-primary-content p-10">
+		<aside>
+			<span class="icon-[game-icons--portal] text-black text-6xl"></span>
+			<p class="font-bold">
+				Proyecto PORTAL now
+				<br />
+				Disponible en Github!
+			</p>
+			<p>Proyecto abierto a la comunidad</p>
+		</aside>
+		<nav>
+			<div class="grid grid-flow-col gap-4">
+				<a href="https://github.com/madmti/Portal-Now">
+					<span class="icon-[mdi--github] text-3xl"></span>
+				</a>
+				<a href="mailto:mpenaloza@usm.cl">
+					<span class="icon-[mdi--outlook] text-3xl"></span>
+				</a>
+				<a href="https://discord.com/users/378599619854204928">
+					<span class="icon-[pajamas--discord] text-3xl"></span>
+				</a>
+			</div>
+		</nav>
+	</footer>
 </Layout>

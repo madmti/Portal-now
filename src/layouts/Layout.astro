@@ -1,11 +1,22 @@
+---
+import { ViewTransitions } from "astro:transitions";
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap"
+			rel="stylesheet"
+		/>
+		<ViewTransitions />
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Portal now</title>
 	</head>
 	<body>
 		<slot />
@@ -13,6 +24,12 @@
 </html>
 
 <style>
+	* {
+		font-family: 'Onest', serif;
+		font-optical-sizing: auto;
+		font-weight: 500;
+		font-style: normal;
+	}
 	html,
 	body {
 		margin: 0;

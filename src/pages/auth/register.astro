@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SignInGoogle from '../../components/SignInGoogle';
+import SignInGithub from '../../components/SignInGithub';
+---
+
+<Layout>
+	<a href="/" class="max-sm:hidden btn btn-lg btn-outline absolute left-5 top-5"
+		><span class="icon-[icon-park-outline--return]"></span></a
+	>
+	<main class="w-full h-full grid place-items-center">
+		<form
+			id="registerForm"
+			action="/api/auth/register/"
+			method="post"
+			class="mx-auto flex w-full max-w-lg flex-col rounded-xl sm:border border-border bg-backgroundSecondary p-4 sm:p-20"
+		>
+			<div class="flex w-full flex-col gap-2">
+				<p>Registrate con</p>
+				<div class="flex w-full flex-col gap-2">
+					<SignInGoogle client:only="preact" />
+					<SignInGithub client:only="preact" />
+				</div>
+			</div>
+			<div class="divider my-6 text-xs">o continua con</div>
+
+			<div class="flex flex-col gap-4">
+				<div class="flex flex-col gap-2">
+					<label class="text-base" for="email">Nombre</label>
+					<input
+						placeholder="Ingresa tu nombre aqui"
+						type="text"
+						name="name"
+						id="name"
+						class="input input-bordered hover:input-primary max-w-full"
+						required
+					/>
+				</div>
+				<div class="flex flex-col gap-2">
+					<label class="text-base" for="email">Correo</label>
+					<input
+						placeholder="Ingresa tu correo aqui"
+						type="email"
+						name="email"
+						id="email"
+						class="input input-bordered hover:input-primary max-w-full"
+						required
+					/>
+				</div>
+				<div class="flex flex-col gap-2">
+					<label class="text-base">
+						<span>Contraseña</span>
+					</label>
+					<input
+						placeholder="Ingresa tu contraseña aqui"
+						type="password"
+						name="password"
+						id="password"
+						class="input input-bordered hover:input-primary max-w-full"
+						required
+					/>
+				</div>
+				<div class="pt-5">
+					<button
+						id="registerButton"
+						type="submit"
+						class="btn btn-primary w-full"
+					>
+						<span id="loadingSpan"></span>
+						Registrarse
+					</button>
+				</div>
+
+				<a href="/auth/signin/" class="link link-primary text-sm">
+					Ya tienes una cuenta? Inicia sesion
+				</a>
+			</div>
+		</form>
+	</main>
+</Layout>

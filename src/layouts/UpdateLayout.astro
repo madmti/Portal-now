@@ -1,0 +1,29 @@
+---
+interface Props {
+	frontmatter: {
+		title: string;
+		date: string;
+	};
+}
+
+const { frontmatter } = Astro.props;
+---
+
+<li
+	class="flex border-b-2 border-b-surface-400 text-surface-400 p-2 m-2 hover:text-primary hover:border-b-primary transition-all"
+>
+	<details class="w-full open:text-neutral-content">
+		<summary class="text-2xl flex items-center justify-between cursor-pointer">
+			<h3 class="flex items-center gap-2">
+				<span
+					class="transform transition-transform duration-300 icon-[material-symbols--arrow-forward-ios-rounded]"
+				></span>
+				<strong>{frontmatter.title}</strong>
+			</h3>
+			<small class="max-sm:hidden">{frontmatter.date}</small>
+		</summary>
+		<div class="p-4">
+			<slot />
+		</div>
+	</details>
+</li>
