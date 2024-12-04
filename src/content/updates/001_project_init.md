@@ -1,5 +1,4 @@
 ---
-layout: '../../layouts/UpdateLayout.astro'
 title: 'Presentación del Proyecto'
 date: '02/12/24'
 ---

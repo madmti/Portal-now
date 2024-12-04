@@ -3,7 +3,7 @@ import {
 	inMemoryPersistence,
 	signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { app } from '../firebase/client';
+import { app } from '../../firebase/client';
 import { useState } from 'preact/hooks';
 
 export default function SignInEmail() {

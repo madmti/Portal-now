@@ -1,15 +1,9 @@
 ---
-import type { MarkdownInstance } from 'astro';
 import Layout from '../layouts/Layout.astro';
-import LogoutBtn from '../components/LogoutBtn.astro';
+import { getCollection } from 'astro:content';
+import ReleaseNote from '../components/ReleaseNote.astro';
 
-interface ReleaseNote {
-	title: string;
-	date: string;
-}
-const releaseNotes: MarkdownInstance<ReleaseNote>[] = Object.values(
-	import.meta.glob('../assets/updates/*.md', { eager: true })
-);
+const releaseNotes = await getCollection('updates');
 releaseNotes.reverse();
 ---
 
@@ -22,7 +16,9 @@ releaseNotes.reverse();
 			<h1 class="max-[545px]:hidden w-max">PORTAL now</h1>
 		</div>
 		<nav class="flex gap-2 justify-end">
-			<a href="/" class="btn btn-outline btn-info">Documentacion</a>
+			<a href="/docs/001_intro/" class="btn btn-outline btn-info"
+				>Documentacion</a
+			>
 		</nav>
 	</header>
 	<main>
@@ -71,7 +67,7 @@ releaseNotes.reverse();
 		<section class="p-6">
 			<h2 class="text-4xl mb-4">Versiones y Actualización</h2>
 			<ul class="sm:m-0 md:m-10 lg:m-10">
-				{releaseNotes.map((note) => <note.Content />)}
+				{releaseNotes.map((note) => <ReleaseNote {...note} />)}
 			</ul>
 		</section>
 	</main>

@@ -1,5 +1,4 @@
 ---
-layout: '../../layouts/UpdateLayout.astro'
 title: 'Autenticación'
 date: '04/12/24'
 ---

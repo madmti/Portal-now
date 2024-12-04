@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import { getCollection } from 'astro:content';
+import DocLayout from '../../layouts/DocLayout.astro';
+
+export const prerender = true;
+export const getStaticPaths = (async () => {
+	const docs = await getCollection('docs');
+	return docs.map((doc) => ({
+		params: {
+			slug: doc.slug,
+		},
+		props: {
+			doc,
+		},
+	}));
+}) satisfies GetStaticPaths;
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+const allDocs = await getCollection('docs');
+
+---
+
+<DocLayout>
+	<main class="p-8 w-full" slot="content">
+		<header class="w-full flex items-center justify-between mb-4">
+			<h1 class="text-5xl">{doc.data.title}</h1>
+			<p class="badge badge-primary">{doc.data.last_update}</p>
+		</header>
+		<Content />
+	</main>
+	<nav slot="sidebar" class="flex min-w-[240px] flex-col gap-1 p-2 text-base">
+		{
+			allDocs.map((d) => (
+				<a
+					href={`/docs/${d.slug}/`}
+					role="button"
+					class={`"flex items-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start hover:bg-neutral" ${
+						d.slug === doc.slug ? 'bg-neutral text-primary' : ''
+					}`}
+				>
+					{d.data.title}
+				</a>
+			))
+		}
+	</nav>
+</DocLayout>
