@@ -1,0 +1,31 @@
+---
+import LogoutBtn from '../components/LogoutBtn.astro';
+import Layout from './Layout.astro';
+
+const path = Astro.url.pathname.split('/').slice(2, -1);
+---
+
+<Layout>
+	<div class="h-full w-full flex flex-col">
+		<header class="flex flex-col">
+			<div class="p-4 w-full bg-neutral flex justify-between items-center">
+				<h1 class="text-2xl">
+					{`${path[0][0].toUpperCase()}${path[0].slice(1).toLowerCase()}`}
+				</h1>
+				<LogoutBtn/>
+			</div>
+			<nav class="py-2 px-4 w-full bg-[#0F1215] flex items-center gap-4">
+				<h2>On</h2>
+				{
+					path.map((route, idx, arr) => (
+						<a
+							href={`/home/${arr.slice(0, idx + 1).join('/')}/`}
+							class="badge badge-outline"
+						>{`${route[0].toUpperCase()}${route.slice(1).toLowerCase()}`}</a>
+					))
+				}
+			</nav>
+		</header>
+		<slot />
+	</div>
+</Layout>
