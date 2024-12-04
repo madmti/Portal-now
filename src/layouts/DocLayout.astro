@@ -1,14 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-
-interface Props {
-	frontmatter: {
-		title: string;
-		last_update: string;
-	};
-}
-
-const { frontmatter } = Astro.props;
 ---
 
 <Layout>
@@ -26,21 +17,8 @@ const { frontmatter } = Astro.props;
 			class="relative flex h-[calc(100vh-80px)] w-full max-w-[20rem] flex-col bg-[#191E24] bg-clip-border p-4 shadow-xl"
 		>
 			<h3 class="block text-xl font-semibold">Documentacion</h3>
-			<nav class="flex min-w-[240px] flex-col gap-1 p-2 text-base">
-				<a
-					href="/docs/001_intro"
-					role="button"
-					class="flex items-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start hover:bg-neutral"
-				>
-					Introduccion
-				</a>
-			</nav>
+			<slot name="sidebar" />
 		</aside>
-		<main class="p-8">
-			<h1 class="text-4xl mb-4">
-				{frontmatter.title}
-			</h1>
-			<slot />
-		</main>
+		<slot name="content" />
 	</div>
 </Layout>

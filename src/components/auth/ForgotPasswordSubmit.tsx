@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'preact/hooks';
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import { app } from '../firebase/client';
+import { app } from '../../firebase/client';
 import type { FirebaseAuthError } from 'firebase-admin/auth';
 
 const auth = getAuth(app);

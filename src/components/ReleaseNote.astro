@@ -1,12 +1,11 @@
 ---
-interface Props {
-	frontmatter: {
-		title: string;
-		date: string;
-	};
-}
+import type { CollectionEntry } from 'astro:content';
 
-const { frontmatter } = Astro.props;
+type Props = CollectionEntry<'updates'>;
+
+const update = Astro.props;
+
+const { Content } = await update.render();
 ---
 
 <li
@@ -16,14 +15,15 @@ const { frontmatter } = Astro.props;
 		<summary class="text-2xl flex items-center justify-between cursor-pointer">
 			<h3 class="flex items-center gap-2">
 				<span
+					id="arrow"
 					class="transform transition-transform duration-300 icon-[material-symbols--arrow-forward-ios-rounded]"
 				></span>
-				<strong>{frontmatter.title}</strong>
+				<strong>{update.data.title}</strong>
 			</h3>
-			<small class="max-sm:hidden">{frontmatter.date}</small>
+			<small class="max-sm:hidden">{update.data.date}</small>
 		</summary>
-		<div class="p-4">
-			<slot />
+		<div class="p-4" id="doc-content-wrapper">
+			<Content />
 		</div>
 	</details>
 </li>

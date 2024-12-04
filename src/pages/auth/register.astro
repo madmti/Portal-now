@@ -1,7 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import SignInGoogle from '../../components/SignInGoogle';
-import SignInGithub from '../../components/SignInGithub';
+import SignInGoogle from '../../components/auth/SignInGoogle';
+import SignInGithub from '../../components/auth/SignInGithub';
+
+export const prerender = true;
 ---
 
 <Layout>
