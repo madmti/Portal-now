@@ -29,7 +29,9 @@ const allDocs = await getCollection('docs');
 			<h1 class="text-5xl">{doc.data.title}</h1>
 			<p class="badge badge-primary">{doc.data.last_update}</p>
 		</header>
-		<Content />
+		<div id="doc-content-wrapper">
+			<Content />
+		</div>
 	</main>
 	<nav slot="sidebar" class="flex min-w-[240px] flex-col gap-1 p-2 text-base">
 		{

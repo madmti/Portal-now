@@ -40,3 +40,52 @@ import { ClientRouter } from 'astro:transitions';
 		height: 100%;
 	}
 </style>
+<style is:global>
+	#doc-content-wrapper {
+		@apply max-w-[100ch];
+	}
+
+	#doc-content-wrapper p {
+		@apply text-lg mb-4;
+	}
+
+	#doc-content-wrapper a {
+		@apply link link-accent;
+	}
+
+	#doc-content-wrapper em {
+		@apply italic text-primary;
+	}
+
+	#doc-content-wrapper strong {
+		@apply text-info;
+	}
+
+	#doc-content-wrapper ul {
+		@apply m-4 ml-8;
+	}
+
+	#doc-content-wrapper li {
+		@apply list-disc;
+	}
+
+	#doc-content-wrapper h1 {
+		@apply text-4xl mb-4;
+	}
+
+	#doc-content-wrapper h2 {
+		@apply text-2xl mb-2;
+	}
+
+	#doc-content-wrapper h3 {
+		@apply text-xl mb-2;
+	}
+
+	#doc-content-wrapper #badge {
+		@apply badge badge-primary;
+	}
+
+	#doc-content-wrapper #badge-neutral {
+		@apply badge badge-neutral;
+	}
+</style>
