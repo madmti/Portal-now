@@ -1,24 +1,41 @@
 ---
+import DocBurgerBtn from '../components/DocBurgerBtn';
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
-	<header
-		class="p-4 bg-neutral w-full flex items-center justify-between gap-4 z-10"
-	>
-		<a href="/" class="text-3xl gap-2 flex items-center w-max">
-			<span class="icon-[game-icons--portal] text-primary"></span>
-			<h1 class="max-[545px]:hidden w-max">PORTAL now</h1>
-		</a>
-		<button class="btn btn-disabled"></button>
-	</header>
-	<div class="flex">
-		<aside
-			class="relative flex h-[calc(100vh-80px)] w-full max-w-[20rem] flex-col bg-[#191E24] bg-clip-border p-4 shadow-xl"
+	<div id="doc-wrapper">
+		<header
+			class="p-4 bg-neutral w-full flex items-center justify-between gap-4 z-10"
 		>
-			<h3 class="block text-xl font-semibold">Documentacion</h3>
-			<slot name="sidebar" />
-		</aside>
-		<slot name="content" />
+			<a href="/" class="text-3xl gap-2 flex items-center w-max">
+				<span class="icon-[game-icons--portal] text-primary"></span>
+				<h1 class="max-[545px]:hidden w-max">PORTAL now</h1>
+			</a>
+			<DocBurgerBtn client:only="preact" />
+		</header>
+		<div class="flex">
+			<aside
+				class="relative flex h-[calc(100vh-80px)] max-md:absolute max-w-[20rem] flex-col bg-[#191E24] bg-clip-border p-4 shadow-xl"
+			>
+				<h3 class="block text-xl font-semibold">Documentacion</h3>
+				<slot name="sidebar" />
+			</aside>
+			<slot name="content" />
+		</div>
 	</div>
 </Layout>
+
+<style>
+	@media (width <= 768px) {
+		#doc-wrapper:has(#aside-go-open) aside {
+			transform: translateX(0%);
+			width: 100%;
+		}
+		#doc-wrapper:has(#aside-go-close) aside {
+			transform: translateX(-100%);
+			width: 0%;
+			display: none;
+		}
+	}
+</style>
