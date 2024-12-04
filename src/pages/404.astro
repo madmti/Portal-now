@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+export const prerender = true;
 ---
 
 <Layout>
@@ -11,7 +12,9 @@ import Layout from '../layouts/Layout.astro';
 			<h1 class="text-4xl">Pagina no encontrada 😶‍🌫️</h1>
 			<nav class="w-full grid sm:grid-cols-2 gap-2">
 				<a href="/" class="btn btn-primary">Pagina principal</a>
-				<a href="/home/dashboard/" class="btn btn-outline btn-primary">Dashboard</a>
+				<a href="/home/dashboard/" class="btn btn-outline btn-primary"
+					>Dashboard</a
+				>
 			</nav>
 		</div>
 	</main>

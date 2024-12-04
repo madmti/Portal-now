@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from 'astro:transitions';
 ---
 
 <!doctype html>
@@ -11,7 +11,7 @@ import { ViewTransitions } from "astro:transitions";
 			href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap"
 			rel="stylesheet"
 		/>
-		<ViewTransitions />
+		<ClientRouter />
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -23,7 +23,10 @@ import { ViewTransitions } from "astro:transitions";
 	</body>
 </html>
 
-<style>
+<style is:global>
+	details[open] span#arrow {
+		transform: rotate(90deg);
+	}
 	* {
 		font-family: 'Onest', serif;
 		font-optical-sizing: auto;

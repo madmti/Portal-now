@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import ReleaseNote from '../components/ReleaseNote.astro';
 
+export const prerender = true;
 const releaseNotes = await getCollection('updates');
 releaseNotes.reverse();
 ---
