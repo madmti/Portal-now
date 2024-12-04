@@ -20,16 +20,15 @@ export const getStaticPaths = (async () => {
 const { doc } = Astro.props;
 const { Content } = await render(doc);
 const allDocs = await getCollection('docs');
-
 ---
 
 <DocLayout>
-	<main class="p-8 w-full" slot="content">
+	<main id="doc-content-wrapper" class="p-8 w-full" slot="content">
 		<header class="w-full flex items-center justify-between mb-4">
-			<h1 class="text-5xl">{doc.data.title}</h1>
-			<p class="badge badge-primary">{doc.data.last_update}</p>
+			<h1 class="title">{doc.data.title}</h1>
+			<p class="badge badge-primary max-sm:hidden">{doc.data.last_update}</p>
 		</header>
-		<div id="doc-content-wrapper">
+		<div class="max-w-[100ch]">
 			<Content />
 		</div>
 	</main>

@@ -41,12 +41,44 @@ import { ClientRouter } from 'astro:transitions';
 	}
 </style>
 <style is:global>
-	#doc-content-wrapper {
-		@apply max-w-[100ch];
+	@media (width <= 545px) {
+		#doc-content-wrapper p {
+			@apply text-base;
+		}
+		#doc-content-wrapper .title {
+			@apply text-3xl;
+		}
+		#doc-content-wrapper h1 {
+			@apply text-2xl mb-4;
+		}
+
+		#doc-content-wrapper h2 {
+			@apply text-xl mb-2;
+		}
+
+		#doc-content-wrapper h3 {
+			@apply text-lg mb-2;
+		}
 	}
 
-	#doc-content-wrapper p {
-		@apply text-lg mb-4;
+	@media (width > 545px) {
+		#doc-content-wrapper p {
+			@apply text-lg;
+		}
+		#doc-content-wrapper .title {
+			@apply text-5xl;
+		}
+		#doc-content-wrapper h1 {
+			@apply text-4xl mb-4;
+		}
+
+		#doc-content-wrapper h2 {
+			@apply text-2xl mb-2;
+		}
+
+		#doc-content-wrapper h3 {
+			@apply text-xl mb-2;
+		}
 	}
 
 	#doc-content-wrapper a {
@@ -67,18 +99,6 @@ import { ClientRouter } from 'astro:transitions';
 
 	#doc-content-wrapper li {
 		@apply list-disc;
-	}
-
-	#doc-content-wrapper h1 {
-		@apply text-4xl mb-4;
-	}
-
-	#doc-content-wrapper h2 {
-		@apply text-2xl mb-2;
-	}
-
-	#doc-content-wrapper h3 {
-		@apply text-xl mb-2;
 	}
 
 	#doc-content-wrapper #badge {
