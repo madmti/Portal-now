@@ -13,9 +13,5 @@ export default function Clock() {
 		};
 	}, []);
 
-	return (
-		<div className="flex flex-col gap-2 items-center">
-			<span className="text-2xl">{date.toTimeString().split(' ')[0]}</span>
-		</div>
-	);
+	return <span className="text-2xl">{date.toTimeString().split(' ')[0]}</span>;
 }
