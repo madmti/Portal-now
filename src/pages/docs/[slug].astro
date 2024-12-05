@@ -23,7 +23,7 @@ const allDocs = await getCollection('docs');
 ---
 
 <DocLayout>
-	<main id="doc-content-wrapper" class="p-8 w-full" slot="content">
+	<main id="doc-content-wrapper" class="p-8 w-full overflow-y-auto" slot="content">
 		<header class="w-full flex items-center justify-between mb-4">
 			<h1 class="title">{doc.data.title}</h1>
 			<p class="badge badge-primary max-sm:hidden">{doc.data.last_update}</p>

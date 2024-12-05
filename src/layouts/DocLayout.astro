@@ -16,7 +16,7 @@ import Layout from '../layouts/Layout.astro';
 				<Burger />
 			</div>
 		</header>
-		<div class="flex">
+		<div class="flex h-[calc(100vh-80px)]">
 			<aside
 				class="relative w-full z-20 flex h-[calc(100vh-80px)] max-md:absolute max-w-[20rem] flex-col bg-[#191E24] bg-clip-border p-4 shadow-xl"
 			>
@@ -28,7 +28,6 @@ import Layout from '../layouts/Layout.astro';
 				for="burger"
 				class="bg-black bg-opacity-70 absolute h-[calc(100vh-80px)] w-full z-10 cursor-pointer"
 			></label>
-
 			<slot name="content" />
 		</div>
 	</div>
