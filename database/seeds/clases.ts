@@ -1,21 +1,20 @@
-import { db } from '../firebase'
+import { db } from '../lib/firebase';
+import { getCollecion, getUserUid } from '../lib/getters';
+import type { tClase } from '../lib/models';
 
-interface Clase {
-    user: string;
-    name: string;
-};
+const user_uid = await getUserUid();
 
-const exampleClases: Clase[] = [
+const exampleClases: tClase[] = [
     'MAT024',
     'INF155',
     'FIS130',
 ].map((name) => ({
-    user: import.meta.env.PUBLIC_TEST_USER_UID,
+    user_uid: user_uid,
     name,
 }));
 
 export default async function SeedClases() {
-    const col = db.collection('Clases');
+    const col = getCollecion('Clases')
 
     console.log('Seeding Clases');
     console.log('🕑'.repeat(exampleClases.length));

@@ -1,11 +1,15 @@
 ---
 import BlockClock from '../../components/home/BlockClock';
+import ClassCard from '../../components/home/ClassCard.astro';
 import Clock from '../../components/home/Clock';
 import GeneralSideBar from '../../components/home/GeneralSideBar.astro';
 import NoClassYet from '../../components/home/NoClassYet.astro';
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import { getClasses } from '../../lib/database';
 import { getDay } from '../../lib/time';
 const date = new Date();
+const { user } = Astro.locals;
+const clases = await getClasses(user.uid);
 ---
 
 <DashboardLayout>
@@ -21,7 +25,8 @@ const date = new Date();
 			<Clock client:only="preact" />
 		</header>
 		<section class="flex flex-col gap-4 p-4 items-center">
-			<NoClassYet />
+			{!clases.length && <NoClassYet />}
+			{clases.map((cls) => <ClassCard data={cls} />)}
 		</section>
 	</main>
 	<GeneralSideBar slot="sidebar" />

@@ -18,6 +18,8 @@ export const getDay = (date: Date) => {
     return days[day];
 };
 
+export const getNumDay = (day: string) => days.indexOf(day);
+
 export const obtenerBloqueActual = (ahora: Date) => {
     const horaActual = `${ahora.getHours()}:${ahora.getMinutes()}`;
 
