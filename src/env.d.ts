@@ -16,6 +16,10 @@ interface ImportMetaEnv {
 
 declare namespace App {
     interface Locals {
+        preferences: {
+            user_uid: string;
+            blockview: boolean;
+        };
         user: {
             /**
              * The user's `uid`.
