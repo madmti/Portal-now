@@ -1,5 +1,5 @@
 ---
-import DocBurgerBtn from '../components/DocBurgerBtn';
+import Burger from '../components/Burger.astro';
 import Layout from '../layouts/Layout.astro';
 ---
 
@@ -12,15 +12,22 @@ import Layout from '../layouts/Layout.astro';
 				<span class="icon-[game-icons--portal] text-primary"></span>
 				<h1 class="max-[545px]:hidden w-max">PORTAL now</h1>
 			</a>
-			<DocBurgerBtn client:only="preact" />
+			<div class="md:btn-disabled md:opacity-0">
+				<Burger />
+			</div>
 		</header>
-		<div class="flex">
+		<div class="flex h-[calc(100vh-80px)]">
 			<aside
-				class="relative flex h-[calc(100vh-80px)] max-md:absolute max-w-[20rem] flex-col bg-[#191E24] bg-clip-border p-4 shadow-xl"
+				class="relative w-full z-20 flex h-[calc(100vh-80px)] max-md:absolute max-w-[20rem] flex-col bg-[#191E24] bg-clip-border p-4 shadow-xl"
 			>
 				<h3 class="block text-xl font-semibold">Documentacion</h3>
 				<slot name="sidebar" />
 			</aside>
+			<label
+				id="side-bar-shadow"
+				for="burger"
+				class="bg-black bg-opacity-70 absolute h-[calc(100vh-80px)] w-full z-10 cursor-pointer"
+			></label>
 			<slot name="content" />
 		</div>
 	</div>
@@ -28,14 +35,28 @@ import Layout from '../layouts/Layout.astro';
 
 <style>
 	@media (width <= 768px) {
-		#doc-wrapper:has(#aside-go-open) aside {
+		aside {
+			transition: all 0.3s;
+			overflow: hidden;
+		}
+
+		#doc-wrapper:has(input[type='checkbox']:checked) aside {
 			transform: translateX(0%);
-			width: 100%;
 		}
-		#doc-wrapper:has(#aside-go-close) aside {
+		#doc-wrapper:has(input[type='checkbox']:not(:checked)) aside {
 			transform: translateX(-100%);
-			width: 0%;
-			display: none;
 		}
+		#doc-wrapper:has(input[type='checkbox']:checked) #side-bar-shadow {
+			z-index: 2;
+			opacity: 1;
+		}
+		#doc-wrapper:has(input[type='checkbox']:not(:checked)) #side-bar-shadow {
+			z-index: -1;
+			opacity: 0;
+		}
+	}
+	#side-bar-shadow {
+		opacity: 0;
+		z-index: -1;
 	}
 </style>

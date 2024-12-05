@@ -17,4 +17,12 @@ Una vez te hayas registrado, accede en [Iniciar sesión](/auth/signin/). 🔑
 
 # Panel
 
-El panel aún sigue en construcción... 🛠️
+El panel está actualmente en construcción 🛠️, pero se puede acceder a cierta parte de él.
+
+<br/>
+
+## Vista previa
+
+![Dashboard](/image.png)
+
+Visita el panel en [Dashboard](/home/dashboard/), ¡recuerda iniciar sesión! 🔒

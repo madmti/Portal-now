@@ -1,0 +1,74 @@
+---
+import Burger from '../components/Burger.astro';
+import Layout from './Layout.astro';
+
+const { user } = Astro.locals;
+const path = Astro.url.pathname.split('/').slice(2, -1);
+---
+
+<Layout>
+	<div id="dashboard-wrapper" class="h-full w-full flex flex-col">
+		<header class="flex flex-col">
+			<div class="p-4 w-full bg-neutral flex justify-between items-center">
+				<h1 class="text-2xl flex gap-2 flex-wrap">
+					Bienvenido <p
+						class="text-primary max-w-[50vw] whitespace-nowrap overflow-hidden overflow-ellipsis"
+					>
+						{user.displayName}
+					</p>
+				</h1>
+
+				<Burger />
+			</div>
+			<nav class="py-2 px-4 w-full bg-[#0F1215] flex items-center gap-4">
+				<h2>Estas en</h2>
+				{
+					path.map((route, idx, arr) => (
+						<>
+							{idx !== 0 && <span class="text-primary">/</span>}
+							<a
+								href={`/home/${arr.slice(0, idx + 1).join('/')}/`}
+								class={`btn btn-sm ${idx === arr.length - 1 ? 'btn-primary' : ''}`}
+							>{`${route[0].toUpperCase()}${route.slice(1).toLowerCase()}`}</a>
+						</>
+					))
+				}
+			</nav>
+		</header>
+		<slot name="content" />
+		<aside
+			id="side-bar"
+			class="flex flex-col max-w-[20rem] w-full h-full z-20 absolute top-0 bg-[#191E24] bg-clip-border p-4 shadow-xl"
+		>
+			<h3 class="block text-2xl font-semibold">Dashboard</h3>
+			<slot name="sidebar" />
+		</aside>
+		<label
+			id="side-bar-shadow"
+			for="burger"
+			class="bg-black bg-opacity-70 absolute h-full w-full z-10 cursor-pointer"
+		></label>
+	</div>
+</Layout>
+
+<style>
+	#side-bar {
+		transition: all 0.3s;
+		overflow: hidden;
+	}
+	#dashboard-wrapper:has(input[type='checkbox']:checked) #side-bar {
+		transform: translateX(0%);
+	}
+	#dashboard-wrapper:has(input[type='checkbox']:not(:checked)) #side-bar {
+		transform: translateX(-100%);
+	}
+	#dashboard-wrapper:has(input[type='checkbox']:checked) #side-bar-shadow {
+		z-index: 2;
+		opacity: 1;
+	}
+	#dashboard-wrapper:has(input[type='checkbox']:not(:checked))
+		#side-bar-shadow {
+		z-index: -1;
+		opacity: 0;
+	}
+</style>
