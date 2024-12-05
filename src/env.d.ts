@@ -11,6 +11,7 @@ interface ImportMetaEnv {
     readonly PUBLIC_FIREBASE_TOKEN_URI: string;
     readonly PUBLIC_FIREBASE_AUTH_CERT_URL: string
     readonly PUBLIC_FIREBASE_CLIENT_CERT_URL: string;
+    readonly PUBLIC_FIREBASE_ANALYTICS: string;
 }
 
 declare namespace App {
