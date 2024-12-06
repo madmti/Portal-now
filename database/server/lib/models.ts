@@ -22,23 +22,27 @@ export type tPreferences = {
  * @type {Object} - Classes model
  * @param {string} user_uid - User uid from Firebase Auth
  * @param {string} name - Class name
+ * @param {string} alias - Class alias
  * @external collection - Subcollection Schedule
  */
 export type tClasses = {
     user_uid: string;
     name: string;
+    alias?: string;
 };
 
 /**
  * @type {Object} - Schedule model
  * @param {string} type - Class type (Lecture, Lab, etc)
  * @param {boolean} block_mode - Info is in Block mode (Hours in blocks)
+ * @param {string[]} blocks - Blocks of the class
  * @param {number} day - Day of the week (0-6)
  * @param {string} place - Place of the class
  */
 export type tSchedule = {
     type: string;
     block_mode: boolean;
+    blocks: string[];
     day: number;
     place: string;
 };

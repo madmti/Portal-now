@@ -7,8 +7,8 @@
 		"build": "astro check && astro build",
 		"preview": "astro preview",
 		"astro": "astro",
-		"seed": "bun run ./database/entry.ts seeds",
-		"drop": "bun run ./database/entry.ts drop"
+		"seed": "bun run ./database/server/entry.ts seeds",
+		"drop": "bun run ./database/server/entry.ts drop"
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.4",
