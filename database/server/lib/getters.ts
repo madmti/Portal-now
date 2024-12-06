@@ -1,6 +1,6 @@
 import { app, db } from "@firebase/server";
 import { getAuth } from "firebase-admin/auth";
-import type { tCollection, tSubCollection } from "./models";
+import type { tCollection, tSubCollection } from "@database/models";
 
 export const getTestUserUid = async () => {
     const auth = getAuth(app);

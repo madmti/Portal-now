@@ -1,5 +1,5 @@
 import { getCollection, getTestUserUid } from "@database/server/lib/getters";
-import type { tPreferences } from "../lib/models";
+import type { tPreferences } from "@database/models";
 
 const user_uid = await getTestUserUid();
 

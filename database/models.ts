@@ -2,10 +2,10 @@
  * @type {string} - Collections name
  */
 export type tCollection = 'Preferences' | 'Classes';
+
 /**
  * @type {string} - Subcollections name
  */
-
 export type tSubCollection = 'Schedule';
 
 /**

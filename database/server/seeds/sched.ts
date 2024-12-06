@@ -1,6 +1,6 @@
 import { getCollection, getSubCollection, getTestUserUid } from "@database/server/lib/getters";
 import { printProgress } from "@database/server/lib/util";
-import type { tClasses, tSchedule } from "@database/server/lib/models";
+import type { tClasses, tSchedule } from "@database/models";
 
 const user_uid = await getTestUserUid();
 

@@ -1,6 +1,6 @@
 import { printProgress } from "@database/server/lib/util";
 import { getCollection, getTestUserUid } from "@database/server/lib/getters";
-import type { tClasses } from "@database/server/lib/models";
+import type { tClasses } from "@database/models";
 
 const user_uid = await getTestUserUid();
 

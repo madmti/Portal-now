@@ -1,4 +1,4 @@
-import type { tCollection, tSubCollection } from "./models";
+import type { tCollection, tSubCollection } from "@database/models";
 
 
 export const collections: tCollection[] = [
