@@ -1,4 +1,4 @@
-import { db } from "../firebase/server";
+import { db } from "@firebase/server";
 import type { tClase, tEventoHorarioBlock, tEventoHorarioTime } from "./database";
 
 export async function getClasses(user_uid: string): Promise<Array<tClase>> {

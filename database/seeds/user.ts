@@ -1,6 +1,4 @@
 import { getAuth } from "firebase-admin/auth";
-import { app } from "../lib/firebase";
-import { getUserUid } from "../lib/getters";
 
 export default async function SeedUser() {
     const auth = getAuth(app);

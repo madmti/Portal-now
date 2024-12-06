@@ -1,5 +1,5 @@
-import { db } from "../lib/firebase";
-import { collections } from "../lib/getters";
+import { db } from "@firebase/server";
+import { collections } from "../lib/consts";
 
 async function deleteCollection(collectionPath: string, batchSize: number) {
     const collectionRef = db.collection(collectionPath);

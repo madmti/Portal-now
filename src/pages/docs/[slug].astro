@@ -2,12 +2,12 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import { getCollection } from 'astro:content';
-import DocLayout from '../../layouts/DocLayout.astro';
+import DocLayout from '@layouts/DocLayout.astro';
 
 export const prerender = true;
 export const getStaticPaths = (async () => {
 	const docs = await getCollection('docs');
-	return docs.map((doc) => ({
+	return docs.map((doc:any) => ({
 		params: {
 			slug: doc.slug,
 		},

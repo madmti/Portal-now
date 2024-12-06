@@ -1,7 +1,7 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import ReleaseNote from '../components/ReleaseNote.astro';
+import Layout from '@layouts/Layout.astro';
+import ReleaseNote from '@components/ReleaseNote.astro';
 
 export const prerender = true;
 const releaseNotes = await getCollection('updates');
@@ -68,7 +68,7 @@ releaseNotes.reverse();
 		<section class="p-6">
 			<h2 class="text-4xl mb-4">Versiones y Actualización</h2>
 			<ul class="sm:m-0 md:m-10 lg:m-10">
-				{releaseNotes.map((note) => <ReleaseNote {...note} />)}
+				{releaseNotes.map((note:any) => <ReleaseNote {...note} />)}
 			</ul>
 		</section>
 	</main>

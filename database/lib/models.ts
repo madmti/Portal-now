@@ -1,52 +1,44 @@
-import type { Timestamp } from "firebase-admin/firestore";
+/**
+ * @type {string} - Collections name
+ */
+export type tCollection = 'Preferences' | 'Classes';
+/**
+ * @type {string} - Subcollections name
+ */
 
-export type tConfig = {
+export type tSubCollection = 'Schedule';
+
+/**
+ * @type {Object} - Preferences model
+ * @param {string} user_uid - User uid from Firebase Auth
+ * @param {boolean} block_mode - Block mode (Hours in blocks)
+ */
+export type tPreferences = {
     user_uid: string;
-    blockview: boolean;
+    block_mode: boolean;
 };
 
-export type tClase = {
+/**
+ * @type {Object} - Classes model
+ * @param {string} user_uid - User uid from Firebase Auth
+ * @param {string} name - Class name
+ * @external collection - Subcollection Schedule
+ */
+export type tClasses = {
     user_uid: string;
     name: string;
 };
 
-export type tEventoHorarioBlock = {
-    user_uid: string;
-    class_uid: FirebaseFirestore.DocumentReference;
-    type: 'horario';
-    name: 'Catedra' | 'Laboratorio' | 'Ayudantia';
-    blockmode: true;
-    blocks: string[];
+/**
+ * @type {Object} - Schedule model
+ * @param {string} type - Class type (Lecture, Lab, etc)
+ * @param {boolean} block_mode - Info is in Block mode (Hours in blocks)
+ * @param {number} day - Day of the week (0-6)
+ * @param {string} place - Place of the class
+ */
+export type tSchedule = {
+    type: string;
+    block_mode: boolean;
     day: number;
+    place: string;
 };
-
-export type tEventoHorarioTime = {
-    user_uid: string;
-    class_uid: FirebaseFirestore.DocumentReference;
-    type: 'horario';
-    name: 'Catedra' | 'Laboratorio' | 'Ayudantia';
-    blockmode: false;
-    start: string;
-    end: string;
-    day: number;
-};
-
-export type tEventoEvaluacion = {
-    user_uid: string;
-    class_uid: FirebaseFirestore.DocumentReference;
-    type: 'evaluacion';
-    name: string;
-    desc: string;
-    date: Timestamp;
-};
-
-export type tEventoCalendario = {
-    user_uid: string;
-    type: 'calendario';
-    name: string;
-    date: Timestamp;
-};
-
-export type tEvento = tEventoHorarioBlock | tEventoHorarioTime | tEventoCalendario | tEventoEvaluacion;
-
-export type tCollection = 'Clases' | 'Eventos' | 'Preferencias';

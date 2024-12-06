@@ -1,5 +1,5 @@
 import { defineMiddleware, sequence } from "astro:middleware";
-import { app } from '../firebase/server';
+import { app } from "@firebase/server";
 import { getAuth } from 'firebase-admin/auth';
 import { getPreferences } from "../lib/getters";
 
