@@ -1,0 +1,22 @@
+---
+import type { tTodaySchedToBlockMapRes } from '@lib/format';
+import { bloques } from '@lib/time';
+import Block from './Block.astro';
+
+interface Props {
+	schedule: tTodaySchedToBlockMapRes;
+}
+const schedule = Astro.props.schedule as tTodaySchedToBlockMapRes;
+---
+
+<ul class="flex flex-col gap-2">
+	{
+		bloques.map((bloque) => {
+			const scheduleBlock = schedule.get(bloque);
+			return <Block sched={scheduleBlock} block={bloque} />;
+		})
+	}
+	{
+		!schedule.size && <p class="text-gray-500">Nada para hoy 😊</p>
+	}
+</ul>

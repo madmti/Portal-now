@@ -1,4 +1,4 @@
-export const bloques = [
+export const bloquesHorario = [
     { bloque: '1-2', inicio: '08:15', fin: '09:25' },
     { bloque: '3-4', inicio: '09:35', fin: '10:45' },
     { bloque: '5-6', inicio: '10:55', fin: '12:05' },
@@ -11,6 +11,9 @@ export const bloques = [
     { bloque: '19-20', inicio: '21:10', fin: '22:20' }
 ];
 
+export type tBloques = '1-2' | '3-4' | '5-6' | '7-8' | '9-10' | '11-12' | '13-14' | '15-16' | '17-18' | '19-20';
+export const bloques: tBloques[] = ['1-2', '3-4', '5-6', '7-8', '9-10', '11-12', '13-14', '15-16', '17-18', '19-20',];
+
 export const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
 export const getDay = (date: Date) => {
@@ -21,21 +24,21 @@ export const getDay = (date: Date) => {
 export const obtenerBloqueActual = (ahora: Date) => {
     const horaActual = `${ahora.getHours()}:${ahora.getMinutes()}`;
 
-    for (let i = 0; i < bloques.length; i++) {
-        const bloque = bloques[i];
+    for (let i = 0; i < bloquesHorario.length; i++) {
+        const bloque = bloquesHorario[i];
         if (horaActual >= bloque.inicio && horaActual <= bloque.fin) {
             return bloque.bloque;
         }
-        if (i < bloques.length - 1 && horaActual > bloque.fin && horaActual < bloques[i + 1].inicio) {
-            return `${bloque.bloque} ~ ${bloques[i + 1].bloque}`;
+        if (i < bloquesHorario.length - 1 && horaActual > bloque.fin && horaActual < bloquesHorario[i + 1].inicio) {
+            return `${bloque.bloque} ~ ${bloquesHorario[i + 1].bloque}`;
         }
     }
 
-    if (horaActual < bloques[0].inicio) {
+    if (horaActual < bloquesHorario[0].inicio) {
         return 'Temprano';
     }
 
-    if (horaActual > bloques[bloques.length - 1].fin) {
+    if (horaActual > bloquesHorario[bloquesHorario.length - 1].fin) {
         return 'Tarde';
     }
 
