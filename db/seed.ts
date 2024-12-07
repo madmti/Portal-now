@@ -26,6 +26,7 @@ export default async function seed() {
 	await db.insert(Schedules).values([
 		{
 			class_id: 1,
+			user_uid: user_uid,
 			type: 'Catedra',
 			day: 1,
 			place: 'P101',
@@ -36,6 +37,7 @@ export default async function seed() {
 		},
 		{
 			class_id: 1,
+			user_uid: user_uid,
 			type: 'Ayudantia',
 			day: 2,
 			place: 'P101',
@@ -46,6 +48,7 @@ export default async function seed() {
 		},
 		{
 			class_id: 2,
+			user_uid: user_uid,
 			type: 'Catedra',
 			day: 2,
 			place: 'P101',
@@ -56,6 +59,7 @@ export default async function seed() {
 		},
 		{
 			class_id: 2,
+			user_uid: user_uid,
 			type: 'Ayudantia',
 			day: 3,
 			place: 'P101',
@@ -66,6 +70,7 @@ export default async function seed() {
 		},
 		{
 			class_id: 3,
+			user_uid: user_uid,
 			type: 'Catedra',
 			day: 3,
 			place: 'P101',
@@ -76,6 +81,7 @@ export default async function seed() {
 		},
 		{
 			class_id: 3,
+			user_uid: user_uid,
 			type: 'Ayudantia',
 			day: 4,
 			place: 'P101',

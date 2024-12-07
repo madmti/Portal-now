@@ -15,6 +15,7 @@ const Classes = defineTable({
 const Schedules = defineTable({
   columns: {
     id: column.number({ primaryKey: true }),
+    user_uid: column.text(),
     class_id: column.number({ references: () => Classes.columns.id }),
     type: column.text(),
     day: column.number(),
