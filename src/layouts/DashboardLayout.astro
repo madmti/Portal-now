@@ -1,5 +1,5 @@
 ---
-import Burger from '../components/Burger.astro';
+import Burger from '@components/Burger.astro';
 import Layout from './Layout.astro';
 
 const { user } = Astro.locals;
@@ -22,7 +22,7 @@ const path = Astro.url.pathname.split('/').slice(2, -1);
 			</div>
 			<nav class="py-2 px-4 w-full bg-[#0F1215] flex items-center gap-4">
 				<h2>Estas en</h2>
-				{
+				{//@ts-ignore
 					path.map((route, idx, arr) => (
 						<>
 							{idx !== 0 && <span class="text-primary">/</span>}
@@ -35,10 +35,12 @@ const path = Astro.url.pathname.split('/').slice(2, -1);
 				}
 			</nav>
 		</header>
-		<slot name="content" />
+		<div class="overflow-y-auto">
+			<slot name="content" />
+		</div>
 		<aside
 			id="side-bar"
-			class="flex flex-col max-w-[20rem] w-full h-full z-20 absolute top-0 bg-[#191E24] bg-clip-border p-4 shadow-xl"
+			class="flex flex-col max-w-[20rem] w-full h-full z-30 absolute top-0 bg-[#191E24] bg-clip-border p-4 shadow-xl"
 		>
 			<h3 class="block text-2xl font-semibold">Dashboard</h3>
 			<slot name="sidebar" />
@@ -46,7 +48,7 @@ const path = Astro.url.pathname.split('/').slice(2, -1);
 		<label
 			id="side-bar-shadow"
 			for="burger"
-			class="bg-black bg-opacity-70 absolute h-full w-full z-10 cursor-pointer"
+			class="bg-black bg-opacity-70 absolute h-full w-full z-20 cursor-pointer"
 		></label>
 	</div>
 </Layout>
