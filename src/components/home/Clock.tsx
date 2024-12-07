@@ -13,5 +13,5 @@ export default function Clock() {
 		};
 	}, []);
 
-	return <span className="text-2xl">{date.toTimeString().split(' ')[0]}</span>;
+	return <span className="text-2xl ml-3">{date.toTimeString().split(' ')[0]}</span>;
 }
