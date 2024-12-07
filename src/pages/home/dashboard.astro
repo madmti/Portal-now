@@ -1,16 +1,26 @@
 ---
-import BlockClock from '../../components/home/BlockClock';
-import Clock from '../../components/home/Clock';
-import GeneralSideBar from '../../components/home/GeneralSideBar.astro';
-import NoClassYet from '../../components/home/NoClassYet.astro';
-import DashboardLayout from '../../layouts/DashboardLayout.astro';
-import { getDay } from '../../lib/time';
+import BlockClock from '@components/home/BlockClock';
+import BlockView from '@components/home/BlockView.astro';
+import Clock from '@components/home/Clock';
+import GeneralSideBar from '@components/home/GeneralSideBar.astro';
+import NoClassYet from '@components/home/NoClassYet.astro';
+import DashboardLayout from '@layouts/DashboardLayout.astro';
+import { getClasses, getTodaySchedule } from '@lib/database';
+import { todaySchedToBlockMap } from '@lib/format';
+import { getDay } from '@lib/time';
 const date = new Date();
+const { user } = Astro.locals;
+const block_mode = true;
+const classes = await getClasses(user.uid);
+const todaySched = await getTodaySchedule(user.uid, date.getDay());
 ---
 
 <DashboardLayout>
-	<main slot="content" class="w-full h-full flex flex-col gap-4">
-		<header class="p-4 w-full flex justify-between border border-neutral">
+	<main slot="content" class="w-full h-full flex flex-col gap-4 relative">
+		<header
+			id="dashboard-header"
+			class="p-4 w-full flex justify-between border border-neutral bg-[#0C0F11] fixed z-[1]"
+		>
 			<div>
 				<div class="text-3xl flex flex-wrap">
 					<h3 class="mr-2">{getDay(date)}</h3>
@@ -20,9 +30,39 @@ const date = new Date();
 			</div>
 			<Clock client:only="preact" />
 		</header>
-		<section class="flex flex-col gap-4 p-4 items-center">
-			<NoClassYet />
+		<section
+			id="dashboard-section"
+			class="flex flex-col gap-4 p-4 items-center mt-[100px] z-0"
+		>
+			{!classes.length && <NoClassYet />}
+			{
+				!!classes.length &&
+					(block_mode ? (
+						<BlockView schedule={todaySchedToBlockMap(todaySched)} />
+					) : (
+						<p>TimeMode</p>
+					))
+			}
 		</section>
 	</main>
 	<GeneralSideBar slot="sidebar" />
 </DashboardLayout>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const header = document.getElementById('dashboard-header');
+		const section = document.getElementById('dashboard-section');
+
+		const updateMarginTop = () => {
+			if (header && section) {
+				console.log('updateMarginTop', header.clientHeight);
+				const height = header.clientHeight;
+				section.style.marginTop = `${height}px`;
+			}
+		};
+
+		updateMarginTop();
+
+		window.addEventListener('resize', updateMarginTop);
+	});
+</script>
