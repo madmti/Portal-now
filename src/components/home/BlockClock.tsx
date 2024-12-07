@@ -1,4 +1,4 @@
-import { obtenerBloqueActual } from '../../lib/time';
+import { obtenerBloqueActual } from '@lib/time';
 
 export default function BlockClock() {
 	const ahora = new Date();

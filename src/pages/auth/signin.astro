@@ -1,10 +1,10 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '@layouts/Layout.astro';
 import { app } from '../../firebase/server';
 import { getAuth } from 'firebase-admin/auth';
-import SignInGoogle from '../../components/auth/SignInGoogle';
-import SignInGithub from '../../components/auth/SignInGithub';
-import SignInEmail from '../../components/auth/SignInEmail';
+import SignInGoogle from '@components/auth/SignInGoogle';
+import SignInGithub from '@components/auth/SignInGithub';
+import SignInEmail from '@components/auth/SignInEmail';
 
 const auth = getAuth(app);
 if (Astro.cookies.has('__session')) {
