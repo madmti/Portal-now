@@ -11,8 +11,9 @@ export const bloquesHorario = [
     { bloque: '19-20', inicio: { h: 21, m: 10 }, fin: { h: 22, m: 20 } }
 ];
 
-export type tBloques = '1-2' | '3-4' | '5-6' | '7-8' | '9-10' | '11-12' | '13-14' | '15-16' | '17-18' | '19-20';
-export const bloques: tBloques[] = ['1-2', '3-4', '5-6', '7-8', '9-10', '11-12', '13-14', '15-16', '17-18', '19-20',];
+export type tBloques = '1-2' | '1-2 ~ 3-4' | '3-4' | '3-4 ~ 5-6' | '5-6' | '5-6 ~ 7-8' | '7-8' | '7-8 ~ 9-10' | '9-10' | '9-10 ~ 11-12' | '11-12' | '11-12 ~ 13-14' | '13-14' | '13-14 ~ 15-16' | '15-16' | '15-16 ~ 17-18' | '17-18' | '17-18 ~ 19-20' | '19-20' | 'Tarde' | 'Temprano' | '-';
+export const bloques: tBloques[] = ['1-2', '3-4', '5-6', '7-8', '9-10', '11-12', '13-14', '15-16', '17-18', '19-20'];
+export const allBloques: tBloques[] = ['-', 'Temprano', '1-2', '1-2 ~ 3-4', '3-4', '3-4 ~ 5-6', '5-6', '5-6 ~ 7-8', '7-8', '7-8 ~ 9-10', '9-10', '9-10 ~ 11-12', '11-12', '11-12 ~ 13-14', '13-14', '13-14 ~ 15-16', '15-16', '15-16 ~ 17-18', '17-18', '17-18 ~ 19-20', '19-20', 'Tarde'];
 
 export const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
@@ -35,6 +36,13 @@ export const earlyEq = (time1: { h: number, m: number }, time2: { h: number, m: 
     if (time1.m < time2.m) return true;
     return false;
 }
+
+export const bloqueActivo = (bloque_actual: tBloques, bloque: tBloques) => {
+    const idx_actual = bloques.indexOf(bloque_actual);
+    const idx = bloques.indexOf(bloque);
+    const diff = idx_actual - idx;
+    return diff == 0 ? diff : diff / Math.abs(diff);
+};
 
 export const obtenerBloqueActual = (ahora: Date) => {
     const horaActual = { h: ahora.getHours(), m: ahora.getMinutes() };

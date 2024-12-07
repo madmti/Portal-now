@@ -36,6 +36,17 @@ export default async function seed() {
 			}
 		},
 		{
+			class_id: 2,
+			user_uid: user_uid,
+			type: 'Catedra',
+			day: 1,
+			place: 'P201',
+			block_mode: true,
+			time: {
+				blocks: ['1-2'],
+			}
+		},
+		{
 			class_id: 1,
 			user_uid: user_uid,
 			type: 'Ayudantia',
