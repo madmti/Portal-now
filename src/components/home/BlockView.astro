@@ -16,7 +16,7 @@ const actual_block = obtenerBloqueActual(new Date()) as tBloques;
 ---
 
 {
-	!!schedule.keys().toArray().length && (
+	!!Array(schedule.keys()).length && (
 		<ul class="timeline timeline-vertical *:ml-[-90%]">
 			{bloques.map((bloque) => {
 				const scheduleBlock = schedule.get(bloque);
@@ -32,7 +32,7 @@ const actual_block = obtenerBloqueActual(new Date()) as tBloques;
 	)
 }
 {
-	!schedule.keys().toArray().length && (
+	!Array(schedule.keys()).length && (
 		<h1 class="text-gray-500 text-2xl p-20">Nada para hoy 😄</h1>
 	)
 }
