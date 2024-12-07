@@ -12,14 +12,17 @@ const authenticate = defineMiddleware(async (context, next) => {
     const auth = getAuth(app);
     const sessionCookie = context.cookies.get('__session')?.value;
     const decodedCookie = await auth.verifySessionCookie(`${sessionCookie}`);
-    const user = await auth.getUser(decodedCookie.uid);
-
-    if (!user) {
-        return context.redirect('/auth/signin/');
+    try {
+        const user = await auth.getUser(decodedCookie.uid);
+        if (!user) {
+            return context.redirect('/auth/signin/');
+        }
+        context.locals.user = user;
+        return next();
     }
-    context.locals.user = user;
-
-    return next();
+    catch (e) {
+        return context.redirect('/api/auth/signout/');
+    }
 });
 
 
