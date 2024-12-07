@@ -18,6 +18,7 @@ const todaySched = await getTodaySchedule(user.uid, date.getDay());
 <DashboardLayout>
 	<main slot="content" class="w-full h-full flex flex-col gap-4 relative">
 		<header
+			id="dashboard-header"
 			class="p-4 w-full flex justify-between border border-neutral bg-[#0C0F11] fixed z-[1]"
 		>
 			<div>
@@ -29,7 +30,10 @@ const todaySched = await getTodaySchedule(user.uid, date.getDay());
 			</div>
 			<Clock client:only="preact" />
 		</header>
-		<section class="flex flex-col gap-4 p-4 items-center mt-[100px] z-0">
+		<section
+			id="dashboard-section"
+			class="flex flex-col gap-4 p-4 items-center mt-[100px] z-0"
+		>
 			{!classes.length && <NoClassYet />}
 			{
 				!!classes.length &&
@@ -43,3 +47,22 @@ const todaySched = await getTodaySchedule(user.uid, date.getDay());
 	</main>
 	<GeneralSideBar slot="sidebar" />
 </DashboardLayout>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const header = document.getElementById('dashboard-header');
+		const section = document.getElementById('dashboard-section');
+
+		const updateMarginTop = () => {
+			if (header && section) {
+				console.log('updateMarginTop', header.clientHeight);
+				const height = header.clientHeight;
+				section.style.marginTop = `${height}px`;
+			}
+		};
+
+		updateMarginTop();
+
+		window.addEventListener('resize', updateMarginTop);
+	});
+</script>
