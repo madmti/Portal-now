@@ -1,5 +1,5 @@
 ---
-import { bloqueActivo, type tBloques } from '@lib/time';
+import { type tBloques } from '@lib/time';
 
 interface Props {
 	activo: number;
@@ -50,7 +50,7 @@ const activo = Astro.props.activo as Props['activo'];
 				<div class="collapse-content">
 					<h1 class="text-lg">{sched[0].class_name}</h1>
 					<p>{sched[0].sched_type} - {sched[0].sched_place}</p>
-					{sched.slice(1).map((s, i) => (
+					{sched.slice(1).map((s) => (
 						<div class="divider">o</div>
 						<h1 class="text-lg">{s.class_name}</h1>
 						<p>
