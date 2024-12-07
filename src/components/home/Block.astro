@@ -2,6 +2,7 @@
 import type { tBloques } from '@lib/time';
 
 interface Props {
+	active: boolean;
 	block: tBloques;
 	sched?: {
 		class_name: string;
@@ -9,22 +10,21 @@ interface Props {
 		sched_place: string;
 	}[];
 }
-
+const active = Astro.props.active as Props['active'];
 const sched = Astro.props.sched as Props['sched'];
 const block = Astro.props.block as Props['block'];
 ---
 
 {
 	!sched && (
-		<div class="collapse bg-base-200">
-			<div class="collapse-title text-xl font-medium">{block} - Vacio</div>
-		</div>
+		<li tabindex="0" class={`collapse bg-base-200 ${active ? 'border border-primary' : ''}`}>
+			<h3 class="collapse-title text-xl font-medium text-gray-500">{block} - Vacio</h3>
+		</li>
 	)
 }
 {
 	sched && sched.length > 1 && (
-		<li class="collapse bg-base-200">
-			<input type="radio" name="my-accordion-1" />
+		<li tabindex="0" class={`collapse bg-base-200 ${active ? 'border border-primary' : ''}`}>
 			<h3 class="collapse-title text-xl font-medium">{block}</h3>
 			<div class="collapse-content">
 				<p>hello</p>
@@ -34,11 +34,15 @@ const block = Astro.props.block as Props['block'];
 }
 {
 	sched && sched.length === 1 && (
-		<li class="collapse bg-base-200">
+		<li tabindex="0" class={`collapse bg-base-200 ${active ? 'border border-primary' : ''}`}>
 			<h3 class="collapse-title text-xl font-medium">
-				{block} - {sched[0].class_name} - {sched[0].sched_type} -{' '}
-				{sched[0].sched_place}
+				{block} - {sched[0].class_name}
 			</h3>
+			<div class="collapse-content">
+				<p>
+					{sched[0].sched_type} - {sched[0].sched_place}
+				</p>
+			</div>
 		</li>
 	)
 }
