@@ -38,8 +38,8 @@ export const earlyEq = (time1: { h: number, m: number }, time2: { h: number, m: 
 }
 
 export const bloqueActivo = (bloque_actual: tBloques, bloque: tBloques) => {
-    const idx_actual = bloques.indexOf(bloque_actual);
-    const idx = bloques.indexOf(bloque);
+    const idx_actual = allBloques.indexOf(bloque_actual);
+    const idx = allBloques.indexOf(bloque);
     const diff = idx_actual - idx;
     return diff == 0 ? diff : diff / Math.abs(diff);
 };

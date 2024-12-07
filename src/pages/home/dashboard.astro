@@ -12,7 +12,7 @@ const date = new Date();
 const { user } = Astro.locals;
 const block_mode = true;
 const classes = await getClasses(user.uid);
-const todaySched = await getTodaySchedule(user.uid, 2);
+const todaySched = await getTodaySchedule(user.uid, date.getDay());
 ---
 
 <DashboardLayout>
