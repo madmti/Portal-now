@@ -292,7 +292,7 @@ export default async function seed() {
             class_id: 1,
             user_uid: user_uid,
             type: 'Catedra',
-            day: 7,
+            day: 0,
             place: 'P101',
             block_mode: true,
             time: {
@@ -303,7 +303,7 @@ export default async function seed() {
             class_id: 2,
             user_uid: user_uid,
             type: 'Catedra',
-            day: 7,
+            day: 0,
             place: 'P102',
             block_mode: true,
             time: {
@@ -314,7 +314,7 @@ export default async function seed() {
             class_id: 3,
             user_uid: user_uid,
             type: 'Catedra',
-            day: 7,
+            day: 0,
             place: 'P103',
             block_mode: true,
             time: {
@@ -325,7 +325,7 @@ export default async function seed() {
             class_id: 1,
             user_uid: user_uid,
             type: 'Catedra',
-            day: 7,
+            day: 0,
             place: 'P104',
             block_mode: true,
             time: {
