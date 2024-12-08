@@ -1,10 +1,48 @@
 ---
+import AgregarHorario from '@components/home/classes/AddSchedule';
+import SubmitAddClass from '@components/home/classes/SubmitAddClass';
 import DashboardLayout from '@layouts/DashboardLayout.astro';
 ---
 
-<DashboardLayout>
-	<main slot="content" class="w-full flex flex-col items-center p-8 gap-4">
-		<h1 class="text-2xl">🚧 En construcción 🚧</h1>
-		<p class="text-gray-500 text-lg">Estamos trabajando en esta página. ¡Vuelve pronto!</p>
+<DashboardLayout hideSidebar>
+	<main
+		slot="content"
+		class="w-full flex flex-col gap-4 p-8 items-center justify-center"
+	>
+		<form
+			method="post"
+			action="/api/home/addclass/"
+			class="w-full max-w-2xl flex flex-col gap-4"
+			id="schedule-form"
+		>
+			<div class="flex flex-col gap-2">
+				<label class="text-base" for="name">
+					<h1 class="text-2xl">Nombre</h1>
+				</label>
+				<input
+					placeholder="Ingresa el nombre de la clase"
+					type="text"
+					name="name"
+					id="name"
+					maxlength="10"
+					class="input input-bordered hover:input-primary max-w-full"
+					autocomplete="off"
+					required
+				/>
+			</div>
+			<div class="flex flex-col gap-2">
+				<label class="text-base" for="horario">
+					<h1 class="text-2xl">Horario</h1>
+				</label>
+				<AgregarHorario client:only="preact" />
+			</div>
+			<div class="flex flex-col gap-2">
+				<label class="text-base">
+					<h1 class="text-2xl">Sistema de Evaluacion</h1>
+				</label>
+				<p class="text-gray-500 text-lg m-4">🚧 Aún no disponible 🚧</p>
+			</div>
+			<SubmitAddClass client:only="preact" />
+		</form>
 	</main>
 </DashboardLayout>

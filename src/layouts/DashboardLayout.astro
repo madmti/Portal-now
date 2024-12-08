@@ -2,6 +2,11 @@
 import Burger from '@components/Burger.astro';
 import Layout from './Layout.astro';
 
+interface Props {
+	hideSidebar?: boolean;
+}
+
+const { hideSidebar } = Astro.props;
 const { user } = Astro.locals;
 const path = Astro.url.pathname.split('/').slice(2, -1);
 const lastPathName = decodeURIComponent(path[path.length - 1]);
@@ -21,7 +26,8 @@ const lastCapitalized =
 					</p>
 				</h1>
 
-				<Burger />
+				{!hideSidebar && <Burger />}
+				{!!hideSidebar && <span class="btn btn-square opacity-0"/>}
 			</div>
 			<nav class="py-2 px-4 bg-[#0F1215] flex items-center gap-4 flex-wrap">
 				<h2>En</h2>
@@ -53,7 +59,7 @@ const lastCapitalized =
 		<div class="overflow-y-auto">
 			<slot name="content" />
 		</div>
-		<aside
+		{!hideSidebar && <aside
 			id="side-bar"
 			class="flex flex-col max-w-[20rem] w-full h-full z-30 absolute top-0 bg-[#191E24] bg-clip-border p-4 shadow-xl"
 		>
@@ -64,7 +70,7 @@ const lastCapitalized =
 			id="side-bar-shadow"
 			for="burger"
 			class="bg-black bg-opacity-70 absolute h-full w-full z-20 cursor-pointer"
-		></label>
+		></label>}
 	</div>
 </Layout>
 
