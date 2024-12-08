@@ -1,47 +1,54 @@
-import { Classes, db, eq, Schedules, sql } from "astro:db";
+import { db, Schedules, sql } from "astro:db";
 
 const user_uid = process.env.PUBLIC_TEST_USER_UID ?? import.meta.env.PUBLIC_TEST_USER_UID;
-const today = 2;
+const class_id = 1;
 const block_mode = true;
 
 interface QueryResult {
-    class_name: string;
+    id: number;
     sched_type: string;
     sched_place: string;
+    sched_day: number;
     sched_block_mode: boolean;
     sched_time: {
         blocks: string[];
     };
 };
 
-export default async function testTodaySched() {
+export default async function testWeekSched() {
     /**
      * QUERY
-     */
+    */
     console.time('Query');
     const result = await db.select({
-        class_name: Classes.name,
+        id: Schedules.id,
         sched_type: Schedules.type,
         sched_place: Schedules.place,
+        sched_day: Schedules.day,
         sched_block_mode: Schedules.block_mode,
         sched_time: Schedules.time,
     })
         .from(Schedules)
-        .where(sql`${Schedules.user_uid} = ${user_uid} AND ${Schedules.day} = ${today} AND ${Schedules.block_mode} = ${block_mode}`)
-        .innerJoin(Classes, eq(Schedules.class_id, Classes.id)) as QueryResult[];
+        .groupBy(Schedules.day)
+        .where(sql`${Schedules.user_uid} = ${user_uid} AND ${Schedules.class_id} = ${class_id} AND ${Schedules.block_mode} = ${block_mode}`) as QueryResult[];
     console.timeEnd('Query');
     /**
      * MAP
      */
     console.time('Format into Map');
-    const mapBlock: Map<string, Array<any>> = new Map();
+    const mapDay: Map<number, Map<string, Array<any>>> = new Map();
     for (const sched of result) {
+        const day = sched.sched_day;
+        if (!mapDay.has(day)) {
+            mapDay.set(day, new Map());
+        }
+        const day_map = mapDay.get(day)!;
         for (const block of sched.sched_time.blocks) {
-            if (!mapBlock.has(block)) {
-                mapBlock.set(block, []);
+            if (!day_map.has(block)) {
+                day_map.set(block, []);
             }
-            mapBlock.get(block)!.push({
-                class_name: sched.class_name,
+            day_map.get(block)!.push({
+                id: sched.id,
                 type: sched.sched_type,
                 place: sched.sched_place,
             });
@@ -51,5 +58,5 @@ export default async function testTodaySched() {
     /**
      * TABLE
      */
-    console.table(mapBlock);
+    console.table(mapDay);
 }
