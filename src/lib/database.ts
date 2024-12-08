@@ -1,5 +1,5 @@
 import { Classes, db, eq, Schedules, sql } from "astro:db";
-import type { tBloques } from "./time";
+import type { tBloques, tNumDay } from "./time";
 
 export type tgetTodayScheduleRes = {
     class_name: string;
@@ -25,4 +25,26 @@ export const getClasses = async (user_uid: string) => {
     return db.select()
         .from(Classes)
         .where(sql`${Classes.user_uid} = ${user_uid}`);
+};
+
+export type tgetClassesInfoRes = {
+    class_id: number;
+    class_name: string;
+    sched_day: tNumDay;
+    sched_place: string;
+    sched_time: {
+        blocks: tBloques[];
+    };
+}[];
+export const getClassesInfo = async (user_uid: string, block_mode: boolean) => {
+    return db.select({
+        class_id: Classes.id,
+        class_name: Classes.name,
+        sched_day: Schedules.day,
+        sched_place: Schedules.place,
+        sched_time: Schedules.time,
+    })
+        .from(Classes)
+        .where(sql`${Classes.user_uid} = ${user_uid} AND ${Schedules.block_mode} = ${block_mode}`)
+        .innerJoin(Schedules, eq(Classes.id, Schedules.class_id)) as Promise<tgetClassesInfoRes>;
 };

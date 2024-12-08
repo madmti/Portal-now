@@ -10,18 +10,23 @@ export default async function seed() {
         {
             id: 1,
             user_uid: user_uid,
-            name: 'MAT024'
+            name: 'MATE 4'
         },
         {
             id: 2,
             user_uid: user_uid,
-            name: 'INF155'
+            name: 'LP'
         },
         {
             id: 3,
             user_uid: user_uid,
-            name: 'FIS130'
+            name: 'FISICA 3'
         },
+        {
+            id: 4,
+            user_uid: user_uid,
+            name: 'TEORICA'
+        }
     ]);
     await db.insert(Schedules).values([
         {

@@ -16,6 +16,7 @@ export const bloques: tBloques[] = ['1-2', '3-4', '5-6', '7-8', '9-10', '11-12',
 export const allBloques: tBloques[] = ['-', 'Temprano', '1-2', '1-2 ~ 3-4', '3-4', '3-4 ~ 5-6', '5-6', '5-6 ~ 7-8', '7-8', '7-8 ~ 9-10', '9-10', '9-10 ~ 11-12', '11-12', '11-12 ~ 13-14', '13-14', '13-14 ~ 15-16', '15-16', '15-16 ~ 17-18', '17-18', '17-18 ~ 19-20', '19-20', 'Tarde'];
 
 export const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+export type tNumDay = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export const getDay = (date: Date) => {
     const day = date.getDay();
