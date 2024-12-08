@@ -1,17 +1,16 @@
 import { Classes, db, eq, Schedules, sql } from "astro:db";
+import type { BlockTimeJson } from "../config";
 
 const user_uid = process.env.PUBLIC_TEST_USER_UID ?? import.meta.env.PUBLIC_TEST_USER_UID;
 const today = 2;
+const today_name = 'Martes';
 const block_mode = true;
 
 interface QueryResult {
     class_name: string;
     sched_type: string;
     sched_place: string;
-    sched_block_mode: boolean;
-    sched_time: {
-        blocks: string[];
-    };
+    sched_time: BlockTimeJson;
 };
 
 export default async function testTodaySched() {
@@ -23,7 +22,6 @@ export default async function testTodaySched() {
         class_name: Classes.name,
         sched_type: Schedules.type,
         sched_place: Schedules.place,
-        sched_block_mode: Schedules.block_mode,
         sched_time: Schedules.time,
     })
         .from(Schedules)
@@ -51,5 +49,6 @@ export default async function testTodaySched() {
     /**
      * TABLE
      */
+    console.log('Day:', today_name);
     console.table(mapBlock);
 }

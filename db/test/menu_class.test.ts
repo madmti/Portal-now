@@ -7,22 +7,16 @@ const class_name = 'MAT024';
 const block_mode = true;
 
 interface QueryResult {
-    id: number;
-    sched_type: string;
-    sched_place: string;
     sched_day: number;
     sched_time: BlockTimeJson;
 };
 
-export default async function testWeekSched() {
+export default async function testMenuClass() {
     /**
      * QUERY
-    */
+     */
     console.time('Query');
     const result = await db.select({
-        id: Schedules.id,
-        sched_type: Schedules.type,
-        sched_place: Schedules.place,
         sched_day: Schedules.day,
         sched_time: Schedules.time,
     })
@@ -33,22 +27,15 @@ export default async function testWeekSched() {
      * MAP
      */
     console.time('Format into Map');
-    const mapDay: Map<number, Map<string, Array<any>>> = new Map();
+    const mapDay: Map<number, Array<string>> = new Map();
     for (const sched of result) {
         const day = sched.sched_day;
         if (!mapDay.has(day)) {
-            mapDay.set(day, new Map());
+            mapDay.set(day, []);
         }
         const day_map = mapDay.get(day)!;
         for (const block of sched.sched_time.blocks) {
-            if (!day_map.has(block)) {
-                day_map.set(block, []);
-            }
-            day_map.get(block)!.push({
-                id: sched.id,
-                type: sched.sched_type,
-                place: sched.sched_place,
-            });
+            day_map.push(block);
         }
     }
     console.timeEnd('Format into Map');
@@ -57,4 +44,4 @@ export default async function testWeekSched() {
      */
     console.log('Class:', class_name);
     console.table(mapDay);
-}
+};
