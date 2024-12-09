@@ -52,3 +52,35 @@ export const getClassesMapFromInfo = (classesInfo: tgetClassesInfoRes) => {
     }
     return classesMap;
 };
+
+export const repeatPerBlock = (sched: {
+    sched_day: number;
+    sched_type: string;
+    sched_place: string;
+    sched_block_mode: boolean;
+    sched_time: any;
+}[]) => {
+    const result = [];
+    for (const s of sched) {
+        if (s.sched_block_mode) {
+            for (const block of s.sched_time.blocks) {
+                result.push({
+                    sched_day: s.sched_day,
+                    sched_type: s.sched_type,
+                    sched_place: s.sched_place,
+                    sched_block_mode: s.sched_block_mode,
+                    sched_time: block,
+                });
+            }
+        } else {
+            result.push(s);
+        }
+    }
+    return result as {
+        sched_day: number;
+        sched_type: string;
+        sched_place: string;
+        sched_block_mode: boolean;
+        sched_time: string;
+    }[];
+};

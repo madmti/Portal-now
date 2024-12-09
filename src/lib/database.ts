@@ -48,3 +48,17 @@ export const getClassesInfo = async (user_uid: string, block_mode: boolean) => {
         .where(sql`${Classes.user_uid} = ${user_uid} AND ${Schedules.block_mode} = ${block_mode}`)
         .innerJoin(Schedules, eq(Classes.id, Schedules.class_id)) as Promise<tgetClassesInfoRes>;
 };
+
+export const getSchedule = async (user_uid: string, class_name: string) => {
+    return db.select({
+        sched_day: Schedules.day,
+        sched_type: Schedules.type,
+        sched_place: Schedules.place,
+        sched_block_mode: Schedules.block_mode,
+        sched_time: Schedules.time,
+    })
+        .from(Classes)
+        .innerJoin(Schedules, eq(Classes.id, Schedules.class_id))
+        .where(sql`${Classes.user_uid} = ${user_uid} AND ${Classes.name} = ${class_name}`)
+        .orderBy(Schedules.day);
+}
