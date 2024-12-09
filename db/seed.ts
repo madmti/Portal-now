@@ -10,18 +10,23 @@ export default async function seed() {
         {
             id: 1,
             user_uid: user_uid,
-            name: 'MAT024'
+            name: 'MATE 4'
         },
         {
             id: 2,
             user_uid: user_uid,
-            name: 'INF155'
+            name: 'LP'
         },
         {
             id: 3,
             user_uid: user_uid,
-            name: 'FIS130'
+            name: 'FISICA 3'
         },
+        {
+            id: 4,
+            user_uid: user_uid,
+            name: 'TEORICA'
+        }
     ]);
     await db.insert(Schedules).values([
         {
@@ -292,7 +297,7 @@ export default async function seed() {
             class_id: 1,
             user_uid: user_uid,
             type: 'Catedra',
-            day: 7,
+            day: 0,
             place: 'P101',
             block_mode: true,
             time: {
@@ -303,7 +308,7 @@ export default async function seed() {
             class_id: 2,
             user_uid: user_uid,
             type: 'Catedra',
-            day: 7,
+            day: 0,
             place: 'P102',
             block_mode: true,
             time: {
@@ -314,7 +319,7 @@ export default async function seed() {
             class_id: 3,
             user_uid: user_uid,
             type: 'Catedra',
-            day: 7,
+            day: 0,
             place: 'P103',
             block_mode: true,
             time: {
@@ -325,7 +330,7 @@ export default async function seed() {
             class_id: 1,
             user_uid: user_uid,
             type: 'Catedra',
-            day: 7,
+            day: 0,
             place: 'P104',
             block_mode: true,
             time: {

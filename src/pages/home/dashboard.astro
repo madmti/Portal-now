@@ -3,7 +3,6 @@ import BlockClock from '@components/home/BlockClock';
 import BlockView from '@components/home/BlockView.astro';
 import Clock from '@components/home/Clock';
 import GeneralSideBar from '@components/home/GeneralSideBar.astro';
-import NoClassYet from '@components/home/NoClassYet.astro';
 import DashboardLayout from '@layouts/DashboardLayout.astro';
 import { getClasses, getTodaySchedule } from '@lib/database';
 import { todaySchedToBlockMap } from '@lib/format';
@@ -34,7 +33,11 @@ const todaySched = await getTodaySchedule(user.uid, date.getDay());
 			id="dashboard-section"
 			class="flex flex-col gap-4 p-4 items-center mt-[100px] z-0"
 		>
-			{!classes.length && <NoClassYet />}
+			{!classes.length && 
+			<h2 class="text-gray-500 text-lg mt-4">¿Aun no has agregado clases?</h2>
+			<p class="text-gray-500">Agrega tus clases y horarios en la seccion</p>
+			<a href="/home/dashboard/clases/" class="btn btn-primary">Clases</a>
+			}
 			{
 				!!classes.length &&
 					(block_mode ? (
@@ -48,21 +51,3 @@ const todaySched = await getTodaySchedule(user.uid, date.getDay());
 	<GeneralSideBar slot="sidebar" />
 </DashboardLayout>
 
-<script>
-	document.addEventListener('DOMContentLoaded', () => {
-		const header = document.getElementById('dashboard-header');
-		const section = document.getElementById('dashboard-section');
-
-		const updateMarginTop = () => {
-			if (header && section) {
-				console.log('updateMarginTop', header.clientHeight);
-				const height = header.clientHeight;
-				section.style.marginTop = `${height}px`;
-			}
-		};
-
-		updateMarginTop();
-
-		window.addEventListener('resize', updateMarginTop);
-	});
-</script>
