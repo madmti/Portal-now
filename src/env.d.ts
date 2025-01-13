@@ -15,7 +15,7 @@ declare namespace App {
             /**
              * The user's enabled plugins.
              */
-            readonly plugins: string[];
+            readonly plugins: Record<string, string[]>;
             /**
              * The user's preferences.
              */

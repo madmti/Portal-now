@@ -4,7 +4,10 @@ export interface UserPreferences {
   show_plugins_names: boolean;
 }
 
-const default_plugins: string[] = [];
+const default_plugins_dist = {
+  '_!$dashboard': [],
+};
+
 const default_preferences: Record<string, any> = {
   show_plugins_names: true,
 };
@@ -12,7 +15,7 @@ const default_preferences: Record<string, any> = {
 const Users = defineTable({
   columns: {
     id: column.text({ primaryKey: true }),
-    plugins: column.json({ default: default_plugins }),
+    plugins_dist: column.json({ default: default_plugins_dist }),
     preferences: column.json({ default: default_preferences })
   }
 });

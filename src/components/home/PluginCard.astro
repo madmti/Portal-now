@@ -5,10 +5,11 @@ import AddPlugin from './addPlugin';
 interface Props {
 	id: string;
 	plugin: tPlugin;
-	is_installed: boolean;
+	user_sections: string[];
+	plugins: Record<string, string[]>;
 }
 
-const { id, plugin, is_installed } = Astro.props;
+const { id, plugin, user_sections, plugins } = Astro.props;
 ---
 
 <article
@@ -22,9 +23,10 @@ const { id, plugin, is_installed } = Astro.props;
 		<AddPlugin
 			client:only="preact"
 			id={id}
-			is_installed={is_installed}
 			storage_group={plugin.storage_group}
 			default_storage={plugin.default_storage}
+			user_sections={user_sections}
+			plugins={plugins}
 		/>
 	</header>
 	<p class="text-md max-w-[90%]">{plugin.description}</p>

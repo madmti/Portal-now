@@ -15,6 +15,8 @@
     "jsxImportSource": "preact",
     "baseUrl": "./src",
     "paths": {
+      "react": ["preact/compat"],
+      "react-dom": ["preact/compat"],
       "@components/*": ["components/*"],
       "@layouts/*": ["layouts/*"],
       "@lib/*": ["lib/*"],

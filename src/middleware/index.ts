@@ -18,8 +18,8 @@ const authenticate = defineMiddleware(async (context, next) => {
         if (!user) {
             return context.redirect('/auth/signin/');
         }
-        const result = await db.select({ plugins: Users.plugins, preferences:Users.preferences }).from(Users).where(sql`id = ${user.uid}`);
-        context.locals.user = { ...user, plugins: result[0].plugins as string[], preferences: result[0].preferences as Record<string, any> };
+        const result = await db.select({ plugins: Users.plugins_dist, preferences:Users.preferences }).from(Users).where(sql`id = ${user.uid}`);
+        context.locals.user = { ...user, plugins: result[0].plugins as Record<string, string[]>, preferences: result[0].preferences as Record<string, any> };
 
         return next();
     }

@@ -1,5 +1,11 @@
 ---
 import LogoutBtn from '../LogoutBtn.astro';
+
+interface Props {
+	sections?: string[];
+}
+
+const { sections } = Astro.props;
 ---
 
 <div class="h-full flex flex-col justify-between">
@@ -18,6 +24,20 @@ import LogoutBtn from '../LogoutBtn.astro';
 		>
 			Configuracion
 		</a>
+		{!!sections?.length && <span class="divider">Secciones</span>}
+		{
+			!!sections?.length &&
+				sections.map((section) => (
+					<a
+						href={`/home/dashboard/${section}/`}
+						role="button"
+						class="flex items
+					-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start text-lg bg-[#0a0c0e2c] hover:bg-neutral"
+					>
+						{section}
+					</a>
+				))
+		}
 	</nav>
 	<LogoutBtn />
 </div>

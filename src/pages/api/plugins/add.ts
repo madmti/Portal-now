@@ -3,38 +3,37 @@ import { db, PluginStorage, sql, Users } from "astro:db";
 
 export const POST: APIRoute = async ({ request, locals, redirect }) => {
     const body = await request.json();
-    const { id: plugin_id, storage_group, default_storage } = body;
-    const { uid: user_uid, plugins: plugins_arr } = locals.user;
+    const { id: plugin_id, storage_group, default_storage, section } = body;
+    const { uid: user_uid, plugins: plugins_dist } = locals.user;
 
-    if (plugins_arr.includes(plugin_id)) {
-        return new Response("Plugin already installed", { status: 200 });
+    if (!plugin_id || !section) {
+        return new Response("Missing required fields", { status: 400 });
+    }
+
+    if (plugins_dist[section].includes(plugin_id)) {
+        return new Response("Plugin already installed", { status: 400 });
     }
 
     try {
-        await db.update(Users).set({ plugins: [...plugins_arr, plugin_id] }).where(sql`id = ${user_uid}`);
+        plugins_dist[section].push(plugin_id);
+        await db.update(Users).set({ plugins_dist }).where(sql`id = ${user_uid}`);
     } catch {
-        return new Response("Failed to install plugin", { status: 500 });
+        return new Response("Error installing plugin", { status: 500 });
     }
 
     if (!storage_group) {
         return new Response("Plugin installed", { status: 200 });
     }
 
-    const storage_exists = await db.select().from(PluginStorage).where(sql`user_uid = ${user_uid} AND storage_group = ${storage_group}`);
-
-    if (!!storage_exists.length) {
+    const storage_group_exists = !!(await db.select().from(PluginStorage).where(sql`user_uid = ${user_uid} AND storage_group = ${storage_group}`)).length;
+    if (storage_group_exists) {
         return new Response("Plugin installed", { status: 200 });
     }
 
     try {
-        await db.insert(PluginStorage).values({
-            user_uid,
-            storage_group,
-            data: default_storage ?? {},
-        });
+        await db.insert(PluginStorage).values({ user_uid, storage_group, data: default_storage ?? {} });
     } catch {
-        await db.update(Users).set({ plugins: plugins_arr }).where(sql`id = ${user_uid}`);
-        return new Response("Failed to add plugin storage", { status: 500 });
+        return new Response("Error installing plugin", { status: 500 });
     }
 
     return new Response("Plugin installed", { status: 200 });
