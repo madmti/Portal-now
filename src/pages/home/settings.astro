@@ -1,0 +1,84 @@
+---
+import LogoutBtn from '@components/LogoutBtn.astro';
+import DashboardLayout from '@layouts/DashboardLayout.astro';
+import { plugins } from '@lib/plugins';
+
+const { user } = Astro.locals;
+const { preferences } = user;
+const plugins_ids = user.plugins;
+---
+
+<DashboardLayout>
+	<div slot="content" class="w-full h-full flex flex-col gap-4 p-4">
+		<h1 class="text-3xl font-bold">Preferences</h1>
+		<form class="flex flex-col gap-4 w-full" action="/api/preferences/" method="POST">
+			<label class="flex items-center gap-2 ml-8" for="show_plugins_names">
+				<input
+					type="checkbox"
+					name="show_plugins_names"
+					id="show_plugins_names"
+					class="checkbox"
+					checked={preferences['show_plugins_names']}
+				/>
+				<span>Show Plugins Names</span>
+			</label>
+			<div class="flex flex-wrap justify-center w-full gap-4">
+				<button type="submit" class="btn btn-wide btn-primary">Save</button>
+				<a href="/home/dashboard/" class="btn btn-wide btn-error">Cancel</a>
+			</div>
+		</form>
+		{!!plugins_ids.length && <h1 class="text-3xl font-bold">Plugins</h1>}
+		<div class="flex flex-col flex-wrap gap-4">
+			{
+				plugins_ids.map((plugin_id) => (
+					<div class="flex flex-wrap items-center justify-between gap-2 p-4 border rounded-lg">
+						<header class="flex items-center gap-2">
+							<img
+								src={`/icons/${plugins[plugin_id].icon}`}
+								class="w-8 h-8"
+								alt={plugins[plugin_id].name}
+							/>
+							<h2 class="text-xl font-bold">{plugins[plugin_id].name}</h2>
+						</header>
+						<div class="flex gap-2 items-center">
+							{!!plugins[plugin_id].settings && (
+								<a
+									href={`/home/settings/${plugin_id}/`}
+									class="btn btn-outline btn-primary btn-square"
+								>
+									<span class="icon-[grommet-icons--configure]" />
+								</a>
+							)}
+							<form action="/api/plugins/remove/" method="POST">
+								<input type="hidden" name="plugin_id" value={plugin_id} />
+								<input
+									type="hidden"
+									name="storage_group"
+									value={plugins[plugin_id].storage_group}
+								/>
+								<button
+									type="submit"
+									class="btn btn-outline btn-error btn-square"
+								>
+									<span class="icon-[gg--trash] text-xl" />
+								</button>
+							</form>
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</div>
+	<div class="h-full flex flex-col justify-between" slot="sidebar">
+		<nav class="flex min-w-[240px] flex-col gap-1 p-2 text-base">
+			<a
+				href="/home/dashboard/"
+				role="button"
+				class="flex items-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start text-lg bg-[#0a0c0e2c] hover:bg-neutral"
+			>
+				Dashboard
+			</a>
+		</nav>
+		<LogoutBtn />
+	</div>
+</DashboardLayout>

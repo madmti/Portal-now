@@ -1,0 +1,31 @@
+---
+import type { tPlugin } from '@lib/plugins';
+import AddPlugin from './addPlugin';
+
+interface Props {
+	id: string;
+	plugin: tPlugin;
+	is_installed: boolean;
+}
+
+const { id, plugin, is_installed } = Astro.props;
+---
+
+<article
+	class="border border-neutral-500 hover:border-primary transition-all p-4 rounded-lg min-w-[300px]"
+>
+	<header class="flex items-center justify-between mb-4">
+		<div class="flex items-center gap-2">
+			<img src={`/icons/${plugin.icon}`} alt={plugin.name} class="w-8 h-8" />
+			<h3 class="text-2xl">{plugin.name}</h3>
+		</div>
+		<AddPlugin
+			client:only="preact"
+			id={id}
+			is_installed={is_installed}
+			storage_group={plugin.storage_group}
+			default_storage={plugin.default_storage}
+		/>
+	</header>
+	<p class="text-md max-w-[90%]">{plugin.description}</p>
+</article>

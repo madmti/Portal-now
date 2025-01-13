@@ -1,0 +1,21 @@
+---
+import PluginSettings from '@components/home/loadPluginSettings';
+import SubmitStorageForm from '@components/home/SubmitStorageForm';
+import DashboardLayout from '@layouts/DashboardLayout.astro';
+import { plugins } from '@lib/plugins';
+
+const { user } = Astro.locals;
+const current_plugin_id = Astro.params.plugin_id!;
+const current_plugin = plugins[current_plugin_id];
+---
+
+<DashboardLayout hideSidebar>
+	<div slot="content" class="w-full h-full flex flex-col gap-4 p-4">
+		<h1 class="text-3xl font-bold">{current_plugin.name}</h1>
+        <PluginSettings client:only="preact" plugin={current_plugin} />
+		<div class="flex flex-wrap justify-center w-full gap-4">
+			<SubmitStorageForm client:only="preact" plugin={current_plugin} />
+			<a href="/home/settings/" class="btn btn-wide btn-error">Cancel</a>
+		</div>
+	</div>
+</DashboardLayout>

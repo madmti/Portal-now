@@ -18,6 +18,7 @@
       "@components/*": ["components/*"],
       "@layouts/*": ["layouts/*"],
       "@lib/*": ["lib/*"],
+      "@plugins/*": ["plugins/*"],
     }
   }
 }

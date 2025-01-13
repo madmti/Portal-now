@@ -1,17 +1,20 @@
 ---
-import BlockClock from '@components/home/BlockClock';
-import BlockView from '@components/home/BlockView.astro';
-import Clock from '@components/home/Clock';
 import GeneralSideBar from '@components/home/GeneralSideBar.astro';
+import PluginLoader from '@components/home/PluginLoader';
 import DashboardLayout from '@layouts/DashboardLayout.astro';
-import { getClasses, getTodaySchedule } from '@lib/database';
-import { todaySchedToBlockMap } from '@lib/format';
-import { getDay } from '@lib/time';
+import { getPluginStorage } from '@lib/database';
+import { plugins } from '@lib/plugins';
+
 const date = new Date();
 const { user } = Astro.locals;
-const block_mode = true;
-const classes = await getClasses(user.uid);
-const todaySched = await getTodaySchedule(user.uid, date.getDay());
+
+const user_plugins = user.plugins.map((id) => plugins[id]);
+const user_preferences = user.preferences;
+const public_user_data = {
+	username: user.displayName ?? '',
+	email: user.email ?? '',
+};
+const plugins_storage = await getPluginStorage(user.uid);
 ---
 
 <DashboardLayout>
@@ -21,33 +24,22 @@ const todaySched = await getTodaySchedule(user.uid, date.getDay());
 			class="p-4 w-full flex justify-between border border-neutral bg-[#0C0F11] fixed z-[1]"
 		>
 			<div>
-				<div class="text-3xl flex flex-wrap">
-					<h3 class="mr-2">{getDay(date)}</h3>
-					<BlockClock client:only="preact" />
-				</div>
+				<div class="text-3xl flex flex-wrap"></div>
 				<p class="text-lg text-gray-500">{date.toLocaleDateString()}</p>
 			</div>
-			<Clock client:only="preact" />
 		</header>
 		<section
 			id="dashboard-section"
-			class="flex flex-col gap-4 p-4 items-center mt-[100px] z-0"
+			class="flex flex-col gap-4 p-4 items-center mt-[50px] z-0"
 		>
-			{!classes.length && 
-			<h2 class="text-gray-500 text-lg mt-4">¿Aun no has agregado clases?</h2>
-			<p class="text-gray-500">Agrega tus clases y horarios en la seccion</p>
-			<a href="/home/dashboard/clases/" class="btn btn-primary">Clases</a>
-			}
-			{
-				!!classes.length &&
-					(block_mode ? (
-						<BlockView schedule={todaySchedToBlockMap(todaySched)} />
-					) : (
-						<p>TimeMode</p>
-					))
-			}
+			<PluginLoader
+				show_plugins_names={user_preferences['show_plugins_names']}
+				user_plugins={user_plugins}
+				public_user_data={public_user_data}
+				plugins_storage={plugins_storage}
+				client:only="preact"
+			/>
 		</section>
 	</main>
 	<GeneralSideBar slot="sidebar" />
 </DashboardLayout>
-
