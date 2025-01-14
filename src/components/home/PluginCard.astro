@@ -30,4 +30,13 @@ const { id, plugin, user_sections, plugins } = Astro.props;
 		/>
 	</header>
 	<p class="text-md max-w-[90%]">{plugin.description}</p>
+	<small class="text-sm mt-2 flex justify-end">
+		{
+			plugin.extension_group && (
+				<span class="text-xs py-2 badge badge-outline badge-accent">
+					{plugin.extension_group}
+				</span>
+			)
+		}
+	</small>
 </article>

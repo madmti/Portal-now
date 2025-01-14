@@ -3,19 +3,21 @@ import GeneralSideBar from '@components/home/GeneralSideBar.astro';
 import PluginLoader from '@components/home/PluginLoader';
 import DashboardLayout from '@layouts/DashboardLayout.astro';
 import { getPluginStorage } from '@lib/database';
-import { plugins } from '@lib/plugins';
+import { plugins, type tPublicUserData } from '@lib/plugins';
 
 const date = new Date();
 const { user } = Astro.locals;
 
+const unique_plugins = new Set(...Object.values(user.plugins));
 const user_plugins = user.plugins['_!$dashboard'].map((id) => plugins[id]);
 const user_sections = Object.keys(user.plugins).filter(
 	(section) => section !== '_!$dashboard'
 );
 const user_preferences = user.preferences;
-const public_user_data = {
+const public_user_data:tPublicUserData = {
 	username: user.displayName ?? '',
 	email: user.email ?? '',
+	installed_plugins: unique_plugins,
 };
 const plugins_storage = await getPluginStorage(user.uid);
 ---

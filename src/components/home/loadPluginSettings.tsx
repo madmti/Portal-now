@@ -1,8 +1,18 @@
-import type { tPlugin } from '@lib/plugins';
+import type { tPlugin, tPublicUserData } from '@lib/plugins';
 import { useEffect, useState } from 'preact/hooks';
 
-export default function PluginSettings({ plugin }: { plugin: tPlugin }) {
-	const [settings, setComponent] = useState<null | preact.ComponentType>(null);
+export default function PluginSettings({
+	plugin,
+	public_user_data,
+	plugins_storage,
+}: {
+	plugin: tPlugin;
+	public_user_data: tPublicUserData;
+	plugins_storage: any;
+}) {
+	const [settings, setComponent] = useState<{
+		component: preact.ComponentType<any>;
+	} | null>(null);
 
 	const loadComponent = async () => {
 		if (!plugin.settings) {
@@ -12,12 +22,24 @@ export default function PluginSettings({ plugin }: { plugin: tPlugin }) {
 		const { default: Component } = await import(
 			/* @vite-ignore */ `../../plugins/${plugin.settings}`
 		);
-		setComponent(Component);
+		setComponent({ component: Component });
 	};
 
 	useEffect(() => {
 		loadComponent();
 	}, []);
 
-	return settings ?? <p>Settings not found</p>;
+	return (
+		<>
+			{settings && (
+				<settings.component
+					user={public_user_data}
+					storage={
+						plugin.storage_group ? plugins_storage[plugin.storage_group] : null
+					}
+				/>
+			)}
+			{!settings && <p>Settings not found</p>}
+		</>
+	);
 }
