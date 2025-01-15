@@ -4,7 +4,11 @@ import {
 	type tPlugin,
 	type tPublicUserData,
 } from '@lib/plugins';
-import { unitrack_extension_group, unitrack_storage_group, type UniTrackStorage } from '../storage';
+import {
+	unitrack_extension_group,
+	unitrack_storage_group,
+	type UniTrackStorage,
+} from '../storage';
 import { useRef, useState } from 'preact/hooks';
 
 function AddClass() {
@@ -126,11 +130,11 @@ function DeleteClass({ classname }: { classname: string }) {
 }
 
 function getUniTrackPlugins(plugins_ids: Set<string>) {
-	const unitrackPlugins: tPlugin[] = [];
+	const unitrackPlugins: (tPlugin & { id: string })[] = [];
 	plugins_ids.forEach((plugin_id) => {
 		const plugin = plugins[plugin_id];
 		if (plugin.extension_group === unitrack_extension_group) {
-			unitrackPlugins.push(plugin);
+			unitrackPlugins.push({ ...plugin, id: plugin_id });
 		}
 	});
 
@@ -155,10 +159,13 @@ export default function UniTrackManagerSettings({
 			<div class="flex flex-wrap items-center justify-center w-full">
 				{unitrackPlugins.map((plugin) => {
 					return (
-						<div class="flex gap-2 items-center justify-center badge badge-outline p-4 m-1">
+						<a
+							href={`/home/settings/${plugin.id}/`}
+							class="flex gap-2 items-center justify-center badge badge-outline p-4 m-1"
+						>
 							<img src={`/icons/${plugin.icon}`} class="w-6 h-6" />
 							<h2 class="text-lg">{plugin.name}</h2>
-						</div>
+						</a>
 					);
 				})}
 			</div>

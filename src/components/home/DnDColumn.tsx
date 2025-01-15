@@ -27,18 +27,26 @@ export default function DnDColumn({
 				</h1>
 				<div class="flex gap-2 items-center">
 					{sortedPlugins != plugins_ids && (
-						<form action="/api/plugins/reorder/" method="POST">
+						<form
+							action="/api/plugins/reorder/"
+							method="POST"
+							class="flex gap-2 items-center"
+						>
 							<input type="hidden" name="section_name" value={section} />
 							<input
 								type="hidden"
 								name="plugins"
 								value={sortedPlugins.join(',')}
 							/>
-							<button
-								type="submit"
-								class="btn btn-outline btn-primary btn-square"
-							>
+							<button type="submit" class="btn btn-primary btn-square">
 								<span class="icon-[uil--save] text-xl" />
+							</button>
+							<button
+								onClick={() => setPlugins(plugins_ids)}
+								type="button"
+								class="btn btn-accent btn-square"
+							>
+								<span class="icon-[tabler--reload] text-xl" />
 							</button>
 						</form>
 					)}
@@ -62,7 +70,7 @@ export default function DnDColumn({
 			)}
 			{sortedPlugins.map((plugin_id, index) => (
 				<div
-					class="flex flex-wrap items-center justify-between gap-2 p-4 border rounded-lg"
+					class="flex flex-wrap items-center justify-between gap-2 p-4 rounded-lg bg-base-200"
 					draggable
 					onDragStart={() => {
 						dragPlugin.current = index;
@@ -74,6 +82,7 @@ export default function DnDColumn({
 					onDragOver={(e) => e.preventDefault()}
 				>
 					<header class="flex items-center gap-2">
+						<span class="icon-[uil--draggabledots]" />
 						<img
 							src={`/icons/${plugins[plugin_id].icon}`}
 							class="w-8 h-8"

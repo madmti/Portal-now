@@ -41,6 +41,17 @@ import { ClientRouter } from 'astro:transitions';
 	}
 </style>
 <style is:global>
+	@media (width < 800px) {
+		#stats-wrap {
+			@apply stats-vertical;
+		}
+	}
+	@media (width >= 800px) {
+		#stats-wrap {
+			@apply stats-horizontal;
+		}
+	}
+
 	@media (width <= 545px) {
 		#doc-content-wrapper p {
 			@apply text-base;

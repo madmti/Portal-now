@@ -27,73 +27,74 @@ function checkStorageAPIBodyType(body: any): body is StorageAPIBody {
     return false;
 }
 
-function doActionOn(target: any, action: StorageAPIAction, value: any) {
-    switch (action) {
-        case "delete":
-            delete target[value];
-            return
-        case "set":
-            target = value;
-            return
-        case "push":
-            target.push(value);
-            break;
-        case "splice":
-            target.splice(target.indexOf(value), 1);
-            break;
-        case "add if not exists":
-            if (!target.includes(value)) {
-                target.push(value);
-            }
-            break;
-    }
-}
-
-function resolveOn(target: any, last_key: string, action: StorageAPIAction, value: any) {
-    switch (action) {
-        case "delete":
-            return;
-        case "set":
-            target[last_key] = value;
-            break;
-        case "push":
-            target[last_key] = [value];
-            break;
-        case "add if not exists":
-            target[last_key] = [value];
-            break;
-    }
-}
-
-function resolvePathOn(storage: any, last_key: string, path_resolver: StorageAPIPathResolvers) {
+function resolvePathOn(target: any, key: string, path_resolver: string) {
     switch (path_resolver) {
         case "reject":
-            return;
+            throw new Error(`Path resolution rejected for key: ${key}`);
         case "create":
-            storage[last_key] = {};
+            target[key] = {};
             break;
+        default:
+            throw new Error(`Resolución de ruta desconocida: ${path_resolver}`);
     }
 }
 
-
-function executeActionAt(storage: any, path: string[], path_resolver: StorageAPIPathResolvers, action: StorageAPIAction, value: any) {
-    let target = storage;
-    try {
-        for (let i = 0; i < path.length - 1; i++) {
-            const key = path[i];
-            if (!(key in target)) {
-                resolvePathOn(target, key, path_resolver);
+function doActionOn(target: any, key: string, action: string, value: any) {
+    switch (action) {
+        case 'set':
+            target[key] = value;
+            break;
+        case 'splice':
+            if (Array.isArray(target[key])) {
+                target[key].splice(target[key].indexOf(value), 1);
+            } else {
+                throw new Error(`Target at ${key} is not an array`);
             }
-            target = target[key];
+            break;
+        case 'add if not exists':
+            if (Array.isArray(target[key])) {
+                if (!target[key].includes(value)) {
+                    target[key].push(value);
+                }
+            } else {
+                throw new Error(`Target at ${key} is not an array`);
+            }
+            break;
+        case 'push':
+            if (Array.isArray(target[key])) {
+                target[key].push(value);
+            } else {
+                throw new Error(`Target at ${key} is not an array`);
+            }
+            break;
+        case 'delete':
+            delete target[key];
+            break;
+        default:
+            throw new Error(`Acción desconocida: ${action}`);
+    }
+}
+
+function executeActionAt(storage: any, pathArray: string[], path_resolver: string, action: string, value: any) {
+
+    function recursiveAction(target: any, keys: string[]) {
+        const key = keys[0];
+
+        if (keys.length === 1) {
+            doActionOn(target, key, action, value);
+            return;
         }
-        const last_key = path[path.length - 1];
-        if (last_key in target) {
-            doActionOn(target[last_key], action, value);
-        } else {
-            resolveOn(target, last_key, action, value);
+
+        if (!(key in target)) {
+            resolvePathOn(target, key, path_resolver);
         }
-    } catch (error) {
-        throw new Error(`Error processing ${path.join(".")} with action "${action}": path rejected`);
+        recursiveAction(target[key], keys.slice(1));
+    }
+
+    try {
+        recursiveAction(storage, pathArray);
+    } catch (error: any) {
+        throw new Error(`Error processing ${pathArray.join(".")} with action "${action}": ${error.message}`);
     }
 }
 
@@ -124,12 +125,12 @@ export const POST: APIRoute = async ({ request, locals, redirect }) => {
         try {
             executeActionAt(storage, path, path_resolver, action, value);
         } catch (error: any) {
-            errors.push(error.message as string);
+            errors.push(error.message);
         }
     }
 
     if (errors.length) {
-        return new Response(errors.join("\n"), { status: 500 });
+        return new Response(errors.join("\n"), { status: 400 });
     }
 
     try {

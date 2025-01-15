@@ -83,8 +83,8 @@ export default function PointTrackerSettings({
 			data: [
 				{
 					action: 'delete',
-					path: ['point_tracker', 'track'],
-					value: clase,
+					path: ['point_tracker', 'track', clase],
+					value: null,
 				},
 			],
 		});
