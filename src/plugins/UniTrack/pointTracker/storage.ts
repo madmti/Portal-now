@@ -1,6 +1,5 @@
-
+export type PointTrackerStats = 'Next Minimum Qualification' | 'Tendency' | 'Succes Status';
 export type PointSistemAlgorithm = 'all equal minimum';
-export const pointSistemAlgorithms: PointSistemAlgorithm[] = ['all equal minimum'];
 
 export interface PointSistemVariable {
     name: string;
@@ -24,11 +23,18 @@ export interface PointTrackerClas {
     point_sistem: PointSistem;
 }
 
+export interface PointTrackerOptions {
+    show_qualification_status: boolean;
+    visible_stats: PointTrackerStats[];
+}
+
 export interface PointTrackerStorage {
     track: {
         [clas: string]: PointTrackerClas;
-    }
+    };
+    options: PointTrackerOptions;
 }
+export const pointSistemAlgorithms: PointSistemAlgorithm[] = ['all equal minimum'];
 
 export const pointtracker_default_clas: PointTrackerClas = {
     goal: 100,
@@ -43,29 +49,13 @@ export const pointtracker_default_clas: PointTrackerClas = {
     },
 };
 
-export const pointtracker_default_storage: PointTrackerStorage = {
-    track: {},
+export const pointtracker_stats: PointTrackerStats[] = ['Next Minimum Qualification', 'Tendency', 'Succes Status'];
+export const pointtracker_default_options: PointTrackerOptions = {
+    show_qualification_status: true,
+    visible_stats: ['Next Minimum Qualification', 'Tendency', 'Succes Status'],
 };
 
-export function getAlgorithmFunction(algorithm: PointSistemAlgorithm): (qualifications: PointTrackerClas) => number {
-    switch (algorithm) {
-        case 'all equal minimum':
-            return AllEqualMinimumAlgorithm;
-    }
-}
-
-export function AllEqualMinimumAlgorithm({ min, current, point_sistem }: PointTrackerClas): number {
-    const { ethas, qualifications } = point_sistem;
-    let target_qualification = min;
-    for (const etha of ethas ?? []) {
-        if (etha.current_value !== -1)
-            target_qualification /= etha.current_value ? etha.current_value * etha.multiplier : 0.0000000001;
-    }
-    target_qualification -= current / 100;
-    let fact_mul = 0;
-    for (const qualification of qualifications) {
-        if (qualification.current_value === -1)
-            fact_mul += qualification.multiplier;
-    }
-    return fact_mul ? target_qualification / fact_mul : 0;
-}
+export const pointtracker_default_storage: PointTrackerStorage = {
+    track: {},
+    options: pointtracker_default_options,
+};

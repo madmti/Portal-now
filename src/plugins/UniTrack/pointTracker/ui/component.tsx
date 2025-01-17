@@ -1,5 +1,5 @@
 import type { tPublicUserData } from '@lib/plugins';
-import type { UniTrackStorage } from '../storage';
+import type { UniTrackStorage } from '@plugins/UniTrack/config';
 import ProgressCard from './progressCard';
 
 function MissingPlugin() {
@@ -48,7 +48,8 @@ export default function PointTracker({
 
 	if (!classes.length) return <NoClasses />;
 
-	const tracked_classes = Object.keys(point_tracker.track);
+	const { track, options } = point_tracker;
+	const tracked_classes = Object.keys(track);
 	const not_tracked_classes = classes.filter(
 		(clase) => !tracked_classes.includes(clase)
 	);
@@ -57,7 +58,11 @@ export default function PointTracker({
 		<div class="flex flex-col gap-4 w-full p-4">
 			<h1 class="text-xl">Clases</h1>
 			{tracked_classes.map((clase) => (
-				<ProgressCard clas={point_tracker.track[clase]} name={clase} />
+				<ProgressCard
+					options={options}
+					clas={point_tracker.track[clase]}
+					name={clase}
+				/>
 			))}
 			{not_tracked_classes.map((clase) => (
 				<span class="alert alert-info opacity-70 hover:opacity-100 transition-all">

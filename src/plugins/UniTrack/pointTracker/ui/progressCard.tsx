@@ -1,17 +1,60 @@
-import type { PointTrackerClas } from './storage';
+import type {
+	PointTrackerClas,
+	PointTrackerOptions,
+	PointTrackerStats,
+} from '../storage';
+import NextMinQual from './stats/nextMinQual';
+import SuccesStatus from './stats/succesStatus';
+import Tendency from './stats/tendency';
+
+function getQualificationState(
+	qualification: number,
+	min: number,
+	is_next: boolean
+) {
+	if (is_next) return <span class="icon-[streamline--target] text-lg" />;
+	if (qualification === -1) return '';
+
+	if (qualification >= min)
+		return <span class="icon-[uil--smile] text-lg text-primary" />;
+	if (qualification < min)
+		return <span class="icon-[mingcute--sad-line] text-lg text-error" />;
+}
+
+function getStatComponent(
+	stat_name: PointTrackerStats,
+	clas: PointTrackerClas,
+	options: PointTrackerOptions
+) {
+	const props = { ...clas, ...options };
+	switch (stat_name) {
+		case 'Next Minimum Qualification':
+			return <NextMinQual {...props} />;
+		case 'Tendency':
+			return <Tendency {...props} />;
+		case 'Succes Status':
+			return <SuccesStatus {...props} />;
+		default:
+			return null;
+	}
+}
 
 export default function ProgressCard({
+	options,
 	clas,
 	name,
 }: {
+	options: PointTrackerOptions;
 	clas: PointTrackerClas;
 	name: string;
 }) {
-	const { goal, min, current, average, tendency, point_sistem } = clas;
+	const { goal, min, current, point_sistem } = clas;
+	const { show_qualification_status, visible_stats } = options;
 	const progress_value = goal != 0 ? current / goal : 100;
 	const next_qualification = point_sistem.qualifications.findIndex(
 		(qualification) => qualification.current_value === -1
 	);
+
 	return (
 		<div class="flex flex-col gap-2 w-full p-4 bg-base-200 rounded-lg">
 			<header class="flex flex-wrap gap-2 w-full items-center justify-between">
@@ -32,7 +75,7 @@ export default function ProgressCard({
 				<table className="table">
 					<thead>
 						<tr>
-							<th></th>
+							{show_qualification_status && <th>Estado</th>}
 							<th>Evaluacion</th>
 							<th>Ponderacion</th>
 							<th>Nota</th>
@@ -47,7 +90,15 @@ export default function ProgressCard({
 										: ''
 								}
 							>
-								<th>{index}</th>
+								{show_qualification_status && (
+									<th>
+										{getQualificationState(
+											qualification.current_value,
+											min,
+											index === next_qualification
+										)}
+									</th>
+								)}
 								<td>{qualification.name}</td>
 								<td>{qualification.multiplier / 100}</td>
 								<td>
@@ -61,42 +112,9 @@ export default function ProgressCard({
 				</table>
 			</div>
 			<div id="stats-wrap" className="stats shadow">
-				<div className="stat place-items-center">
-					<div className="stat-title">Sigte. Nota min.</div>
-					<div className="stat-value">{point_sistem.target_qualification.toFixed(3)}</div>
-					<div className="stat-desc">
-						Calculada usando "{point_sistem.algorithm}"
-					</div>
-				</div>
-
-				<div className="stat place-items-center">
-					<div className="stat-title">Tendencia</div>
-					<div className="stat-value text-secondary">
-						{tendency >= 0 ? '+' : ''}
-						{(tendency * 100).toPrecision(4)}%
-					</div>
-					<div className="stat-desc text-secondary">
-						Comparado con tu promedio
-					</div>
-				</div>
-
-				<div className="stat place-items-center">
-					<div className="stat-title">Exito</div>
-					<div className="stat-value">
-						{current >= min * 100 && (
-							<span class="icon-[tabler--check] text-success" />
-						)}
-						{current < min * 100 && next_qualification !== -1 && (
-							<span class="icon-[tabler--clock] text-accent" />
-						)}
-						{current < min * 100 && next_qualification === -1 && (
-							<span class="icon-[topcoat--cancel] text-error" />
-						)}
-					</div>
-					<div className="stat-desc">
-						Faltan {(min * 100 - current) / 100} pts para el min.
-					</div>
-				</div>
+				{visible_stats.map((stat_name) =>
+					getStatComponent(stat_name, clas, options)
+				)}
 			</div>
 		</div>
 	);

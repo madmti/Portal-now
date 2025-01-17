@@ -1,8 +1,9 @@
 import { requestStorageAPI, type tPublicUserData } from '@lib/plugins';
-import { unitrack_storage_group, type UniTrackStorage } from '../storage';
-import { pointtracker_default_clas } from './storage';
 import { useState } from 'preact/hooks';
 import EditCard from './editCard';
+import type { UniTrackStorage } from '@plugins/UniTrack/config';
+import { requestAttachClass, requestDeattachClass } from '../funcs';
+import EditOptions from './editOptions';
 
 function MissingPlugin() {
 	return (
@@ -45,6 +46,7 @@ export default function PointTrackerSettings({
 }) {
 	const { installed_plugins } = user;
 	const { point_tracker, classes } = storage;
+	const { options } = point_tracker;
 
 	if (!installed_plugins.has('unitrack_manager')) return <MissingPlugin />;
 
@@ -58,17 +60,7 @@ export default function PointTrackerSettings({
 	);
 
 	async function attachClass(clase: string) {
-		const res = await requestStorageAPI({
-			storage_group: unitrack_storage_group,
-			data: [
-				{
-					action: 'set',
-					path_resolver: 'create',
-					path: ['point_tracker', 'track', clase],
-					value: pointtracker_default_clas,
-				},
-			],
-		});
+		const res = await requestAttachClass(clase);
 		if (res.ok) {
 			location.reload();
 		} else {
@@ -77,35 +69,22 @@ export default function PointTrackerSettings({
 		}
 	}
 
-	async function deattachClass(clase: string) {
-		const res = await requestStorageAPI({
-			storage_group: unitrack_storage_group,
-			data: [
-				{
-					action: 'delete',
-					path: ['point_tracker', 'track', clase],
-					value: null,
-				},
-			],
-		});
-		if (res.ok) {
-			location.reload();
-		} else {
-			setError('Error al intentar desadjuntar la clase');
-			setTimeout(() => setError(null), 3000);
-		}
-	}
-
 	return (
 		<>
 			<div class="flex flex-col gap-4 w-full p-4">
+				<h1 class="text-2xl">Opciones</h1>
+				<EditOptions options={options} />
+
 				<h1 class="text-2xl">Clases</h1>
+				{!tracked_classes.length && (
+					<div class="flex flex-col gap-2 w-full p-4 bg-base-200 rounded-lg">
+						<header class="flex gap-2 w-full items-center justify-between">
+							<h2 class="text-lg">No hay clases en seguimiento</h2>
+						</header>
+					</div>
+				)}
 				{tracked_classes.map((clase) => (
-					<EditCard
-						deattachClass={deattachClass}
-						name={clase}
-						clase={point_tracker.track[clase]}
-					/>
+					<EditCard name={clase} clase={point_tracker.track[clase]} />
 				))}
 				<h1 class="text-2xl">Sin seguimiento</h1>
 				{not_tracked_classes.map((clase) => (
