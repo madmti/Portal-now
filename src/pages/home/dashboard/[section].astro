@@ -4,20 +4,17 @@ import PluginLoader from '@components/home/PluginLoader';
 import DashboardLayout from '@layouts/DashboardLayout.astro';
 import { getPluginStorage } from '@lib/database';
 import { plugins } from '@lib/plugins';
+import { getPublicUserData } from '@lib/user';
 
 const date = new Date();
 const { user } = Astro.locals;
-const { section } = Astro.params;
 
-const user_plugins = user.plugins[section ?? '']?.map((id) => plugins[id]);
+const user_plugins = user.plugins['_!$dashboard'].map((id) => plugins[id]);
 const user_sections = Object.keys(user.plugins).filter(
 	(section) => section !== '_!$dashboard'
 );
 const user_preferences = user.preferences;
-const public_user_data = {
-	username: user.displayName ?? '',
-	email: user.email ?? '',
-};
+const public_user_data = getPublicUserData(user);
 const plugins_storage = await getPluginStorage(user.uid);
 ---
 

@@ -58,7 +58,7 @@ export default function AddPlugin({
 				</button>
 				<ul
 					tabIndex={0}
-					className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+					className="dropdown-content menu bg-base-300 rounded-box z-[1] w-52 p-2 shadow"
 				>
 					{user_sections.map((section) => (
 						<li>

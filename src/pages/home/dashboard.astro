@@ -3,22 +3,18 @@ import GeneralSideBar from '@components/home/GeneralSideBar.astro';
 import PluginLoader from '@components/home/PluginLoader';
 import DashboardLayout from '@layouts/DashboardLayout.astro';
 import { getPluginStorage } from '@lib/database';
-import { plugins, type tPublicUserData } from '@lib/plugins';
+import { plugins } from '@lib/plugins';
+import { getPublicUserData } from '@lib/user';
 
 const date = new Date();
 const { user } = Astro.locals;
 
-const unique_plugins = new Set(...Object.values(user.plugins));
 const user_plugins = user.plugins['_!$dashboard'].map((id) => plugins[id]);
 const user_sections = Object.keys(user.plugins).filter(
 	(section) => section !== '_!$dashboard'
 );
 const user_preferences = user.preferences;
-const public_user_data:tPublicUserData = {
-	username: user.displayName ?? '',
-	email: user.email ?? '',
-	installed_plugins: unique_plugins,
-};
+const public_user_data = getPublicUserData(user);
 const plugins_storage = await getPluginStorage(user.uid);
 ---
 
@@ -29,8 +25,7 @@ const plugins_storage = await getPluginStorage(user.uid);
 			class="p-4 w-full flex justify-between border border-neutral bg-[#0C0F11] fixed z-[1]"
 		>
 			<div>
-				<div class="text-3xl flex flex-wrap">
-				</div>
+				<div class="text-3xl flex flex-wrap"></div>
 				<p class="text-lg text-gray-500">{date.toLocaleDateString()}</p>
 			</div>
 		</header>
@@ -47,5 +42,13 @@ const plugins_storage = await getPluginStorage(user.uid);
 			/>
 		</section>
 	</main>
-	<GeneralSideBar slot="sidebar" sections={user_sections} />
+	<GeneralSideBar
+		slot="sidebar"
+		main_links={[
+			['Plugins', '/home/plugins/'],
+			['Configuracion', '/home/settings/'],
+			['Documentacion', '/docs/001_intro/'],
+		]}
+		sections={user_sections}
+	/>
 </DashboardLayout>

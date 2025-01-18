@@ -1,12 +1,14 @@
 ---
 import DnDColumn from '@components/home/DnDColumn';
-import LogoutBtn from '@components/LogoutBtn.astro';
+import GeneralSideBar from '@components/home/GeneralSideBar.astro';
 import DashboardLayout from '@layouts/DashboardLayout.astro';
-import { plugins } from '@lib/plugins';
 
 const { user } = Astro.locals;
 const { preferences } = user;
 const plugins_dist = user.plugins;
+const user_sections = Object.keys(user.plugins).filter(
+	(section) => section !== '_!$dashboard'
+);
 ---
 
 <DashboardLayout>
@@ -72,23 +74,13 @@ const plugins_dist = user.plugins;
 			</dialog>
 		</div>
 	</div>
-	<div class="h-full flex flex-col justify-between" slot="sidebar">
-		<nav class="flex min-w-[240px] flex-col gap-1 p-2 text-base">
-			<a
-				href="/home/dashboard/"
-				role="button"
-				class="flex items-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start text-lg bg-[#0a0c0e2c] hover:bg-neutral"
-			>
-				Dashboard
-			</a>
-			<a
-				href="/home/dashboard/plugins/"
-				role="button"
-				class="flex items-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start text-lg bg-[#0a0c0e2c] hover:bg-neutral"
-			>
-				Plugins
-			</a>
-		</nav>
-		<LogoutBtn />
-	</div>
+	<GeneralSideBar
+		slot="sidebar"
+		main_links={[
+			['Plugins', '/home/plugins/'],
+			['Configuracion', '/home/settings/'],
+			['Documentacion', '/docs/001_intro/'],
+		]}
+		sections={user_sections}
+	/>
 </DashboardLayout>

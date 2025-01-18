@@ -46,7 +46,7 @@ export default function PluginLoader({
 					<p class="text-lg text-neutral-500 mt-10">
 						No as agregado plugins aun?
 					</p>
-					<a class="btn btn-primary" href="/home/dashboard/plugins/">
+					<a class="btn btn-primary" href="/home/plugins/">
 						Ver plugins
 					</a>
 				</div>

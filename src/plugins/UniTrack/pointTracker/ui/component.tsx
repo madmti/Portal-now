@@ -9,7 +9,7 @@ function MissingPlugin() {
 				No has instalado el plugin{' '}
 				<span class="text-accent">UniTrack Manager</span>
 			</h2>
-			<a href="/home/dashboard/plugins/" class="btn btn-primary btn-wide mt-4">
+			<a href="/home/plugins/" class="btn btn-primary btn-wide mt-4">
 				<span class="icon-[material-symbols--search] text-xl" />
 				Buscar
 			</a>

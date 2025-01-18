@@ -3,27 +3,27 @@ import LogoutBtn from '../LogoutBtn.astro';
 
 interface Props {
 	sections?: string[];
+	main_links?: string[][];
 }
 
-const { sections } = Astro.props;
+const { sections, main_links } = Astro.props;
 ---
 
 <div class="h-full flex flex-col justify-between">
 	<nav class="flex min-w-[240px] flex-col gap-1 p-2 text-base">
-		<a
-			href="/home/dashboard/plugins/"
-			role="button"
-			class="flex items-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start text-lg bg-[#0a0c0e2c] hover:bg-neutral"
-		>
-			Plugins
-		</a>
-		<a
-			href="/home/settings/"
-			role="button"
-			class="flex items-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start text-lg bg-[#0a0c0e2c] hover:bg-neutral"
-		>
-			Configuracion
-		</a>
+		{!!main_links?.length && <span class="divider">Principal</span>}
+		{
+			!!main_links?.length &&
+				main_links.map(([link, href]) => (
+					<a
+						href={href}
+						role="button"
+						class="flex items-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start text-lg bg-[#0a0c0e2c] hover:bg-neutral"
+					>
+						{link}
+					</a>
+				))
+		}
 		{!!sections?.length && <span class="divider">Secciones</span>}
 		{
 			!!sections?.length &&
