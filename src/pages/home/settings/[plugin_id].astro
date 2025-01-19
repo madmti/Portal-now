@@ -3,17 +3,13 @@ import PluginSettings from '@components/home/loadPluginSettings';
 import SubmitStorageForm from '@components/home/SubmitStorageForm';
 import DashboardLayout from '@layouts/DashboardLayout.astro';
 import { getPluginStorage } from '@lib/database';
-import { plugins, type tPublicUserData } from '@lib/plugins';
+import { plugins } from '@lib/plugins';
+import { getPublicUserData } from '@lib/user';
 
 const { user } = Astro.locals;
-const unique_plugins = new Set(...Object.values(user.plugins));
 const current_plugin_id = Astro.params.plugin_id!;
 const current_plugin = plugins[current_plugin_id];
-const public_user_data: tPublicUserData = {
-	username: user.displayName ?? '',
-	email: user.email ?? '',
-	installed_plugins: unique_plugins,
-};
+const public_user_data = getPublicUserData(user);
 const plugins_storage = await getPluginStorage(user.uid);
 ---
 

@@ -92,31 +92,49 @@ import { ClientRouter } from 'astro:transitions';
 		}
 	}
 
-	#doc-content-wrapper a {
+	#doc-small-content-wrapper p {
+		@apply text-base;
+	}
+	#doc-small-content-wrapper .title {
+		@apply text-3xl;
+	}
+	#doc-small-content-wrapper h1 {
+		@apply text-2xl mb-4;
+	}
+
+	#doc-small-content-wrapper h2 {
+		@apply text-xl mb-2;
+	}
+
+	#doc-small-content-wrapper h3 {
+		@apply text-lg mb-2;
+	}
+
+	:is(#doc-content-wrapper, #doc-small-content-wrapper) a {
 		@apply link link-accent;
 	}
 
-	#doc-content-wrapper em {
+	:is(#doc-content-wrapper, #doc-small-content-wrapper) em {
 		@apply italic text-primary;
 	}
 
-	#doc-content-wrapper strong {
+	:is(#doc-content-wrapper, #doc-small-content-wrapper) strong {
 		@apply text-info;
 	}
 
-	#doc-content-wrapper ul {
+	:is(#doc-content-wrapper, #doc-small-content-wrapper) ul {
 		@apply m-4 ml-8;
 	}
 
-	#doc-content-wrapper li {
+	:is(#doc-content-wrapper, #doc-small-content-wrapper) li {
 		@apply list-disc;
 	}
 
-	#doc-content-wrapper #badge {
+	:is(#doc-content-wrapper, #doc-small-content-wrapper) #badge {
 		@apply badge badge-primary;
 	}
 
-	#doc-content-wrapper #badge-neutral {
+	:is(#doc-content-wrapper, #doc-small-content-wrapper) #badge-neutral {
 		@apply badge badge-neutral;
 	}
 </style>

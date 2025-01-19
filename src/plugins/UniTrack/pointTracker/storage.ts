@@ -24,6 +24,7 @@ export interface PointTrackerClas {
 }
 
 export interface PointTrackerOptions {
+    show_unattached_class_alert: boolean;
     show_qualification_status: boolean;
     visible_stats: PointTrackerStats[];
 }
@@ -51,6 +52,7 @@ export const pointtracker_default_clas: PointTrackerClas = {
 
 export const pointtracker_stats: PointTrackerStats[] = ['Next Minimum Qualification', 'Tendency', 'Succes Status'];
 export const pointtracker_default_options: PointTrackerOptions = {
+    show_unattached_class_alert: true,
     show_qualification_status: true,
     visible_stats: ['Next Minimum Qualification', 'Tendency', 'Succes Status'],
 };

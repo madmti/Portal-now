@@ -53,6 +53,22 @@ export default function EditOptions({
 					<span>Mostrar estado de calificación</span>
 				</label>
 			</div>
+			<div class="flex items-center justify-between pl-8 gap-2">
+				<label class="flex items-center gap-2 cursor-pointer">
+					<input
+						type="checkbox"
+						class="toggle toggle-primary"
+						onChange={(e) =>
+							setOptionsState({
+								...optionsState,
+								show_unattached_class_alert: e.currentTarget.checked,
+							})
+						}
+						checked={optionsState.show_unattached_class_alert}
+					/>
+					<span>Mostrar alerta de clases sin seguimiento</span>
+				</label>
+			</div>
 			<h1 class="text-xl">Estadisticas</h1>
 			<div class="flex flex-col justify-center gap-2">
 				{optionsState.visible_stats.map((stat, index) => (
@@ -120,7 +136,9 @@ export default function EditOptions({
 			</div>
 			{optionsState !== options && (
 				<div class="grid grid-cols-2 gap-2">
-					<button onClick={UpdateOptions} class="btn btn-primary mt-4">Guardar</button>
+					<button onClick={UpdateOptions} class="btn btn-primary mt-4">
+						Guardar
+					</button>
 					<button
 						onClick={() => setOptionsState(options)}
 						class="btn btn-accent mt-4"

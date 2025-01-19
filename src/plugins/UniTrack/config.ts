@@ -3,6 +3,8 @@ import { pointtracker_default_storage, type PointTrackerStorage } from "./pointT
 import type { StorageAPIDataAction } from "pages/api/plugins/storage_api";
 import { PointTrackerConfig } from "./pointTracker/config";
 import { UniTrackManagerConfig } from "./manager/config";
+import { SchedulerConfig } from "./scheduler/config";
+import { scheduler_default_storage, type SchedulerStorage } from "./scheduler/storage";
 
 // ============================================================
 // ======================= IDS ================================
@@ -16,10 +18,12 @@ export const unitrack_storage_group = 'unitrack_storage_group';
 export interface UniTrackStorage {
     classes: string[];
     point_tracker: PointTrackerStorage;
+    scheduler: SchedulerStorage;
 }
 export const unitrack_default_storage: UniTrackStorage = {
     classes: [],
     point_tracker: pointtracker_default_storage,
+    scheduler: scheduler_default_storage,
 };
 
 // ============================================================
@@ -40,11 +44,14 @@ export type UniTrackPluginConfig = (DoesAttachClass | DoesNotAttachClass) & {
     icon: string;
     component?: string;
     settings?: string;
+    documentation?: string;
     custom_submitter?: boolean;
+    version?: string;
 }
 export const UniTrackInternalPlugins: Record<string, UniTrackPluginConfig> = Object.fromEntries([
     UniTrackManagerConfig,
     PointTrackerConfig,
+    SchedulerConfig,
 ].map(plugin => [plugin.id, plugin]));
 export const UniTrackPlugins: Record<string, tPlugin> = Object.fromEntries(
     Object.entries(UniTrackInternalPlugins).map(([key, value]) => [key, {
@@ -59,5 +66,7 @@ export const UniTrackPlugins: Record<string, tPlugin> = Object.fromEntries(
         custom_submitter: value.custom_submitter,
         storage_group: unitrack_storage_group,
         default_storage: unitrack_default_storage,
+        documentation: value.documentation,
+        version: value.version,
     }])
 );

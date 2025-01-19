@@ -31,6 +31,8 @@ export interface tPlugin {
     settings?: string;
     extension_group?: string;
     custom_submitter?: boolean;
+    documentation?: string;
+    version?: string;
 }
 export const server_side_rendering_frameworks: tPluginFrameWork[] = ['astro-server'];
 export const plugins: Record<string, tPlugin> = {

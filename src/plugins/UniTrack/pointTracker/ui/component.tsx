@@ -50,9 +50,9 @@ export default function PointTracker({
 
 	const { track, options } = point_tracker;
 	const tracked_classes = Object.keys(track);
-	const not_tracked_classes = classes.filter(
-		(clase) => !tracked_classes.includes(clase)
-	);
+	const not_tracked_classes = options.show_unattached_class_alert
+		? classes.filter((clase) => !tracked_classes.includes(clase))
+		: [];
 
 	return (
 		<div class="flex flex-col gap-4 w-full p-4">
