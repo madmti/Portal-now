@@ -42,5 +42,13 @@ const plugins_storage = await getPluginStorage(user.uid);
 			/>
 		</section>
 	</main>
-	<GeneralSideBar slot="sidebar" sections={user_sections} />
+	<GeneralSideBar
+		slot="sidebar"
+		main_links={[
+			['Plugins', '/home/plugins/'],
+			['Configuracion', '/home/settings/'],
+			['Documentacion', '/docs/001_intro/'],
+		]}
+		sections={user_sections}
+	/>
 </DashboardLayout>

@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
 import { db, PluginStorage, sql, Users } from "astro:db";
 
-export type StorageAPIAction = "push" | "add if not exists" | "splice" | "set" | "delete";
+export type StorageAPIAction = "push" | "add if not exists" | "splice" | "set" | "delete" | "delete where object";
 export type StorageAPIPathResolvers = "reject" | "create";
 
 export interface StorageAPIDataAction {
@@ -9,6 +9,7 @@ export interface StorageAPIDataAction {
     path_resolver?: StorageAPIPathResolvers;
     action: StorageAPIAction;
     value: any;
+    where_path_name?: string;
 }
 
 export interface StorageAPIBody {
@@ -39,7 +40,8 @@ function resolvePathOn(target: any, key: string, path_resolver: string) {
     }
 }
 
-function doActionOn(target: any, key: string, action: string, value: any) {
+function doActionOn(target: any, key: string, data: StorageAPIDataAction) {
+    const { action, value, where_path_name } = data;
     switch (action) {
         case 'set':
             target[key] = value;
@@ -70,18 +72,34 @@ function doActionOn(target: any, key: string, action: string, value: any) {
         case 'delete':
             delete target[key];
             break;
+        case 'delete where object':
+            if (!where_path_name) {
+                throw new Error(`Missing where_path_name`);
+            }
+            if (typeof target[key] === 'object' && target[key] !== null) {
+                for (const subKey in target[key]) {
+                    if (target[key][subKey][where_path_name] === value) {
+                        delete target[key][subKey];
+                    }
+                }
+            } else {
+                throw new Error(`Target at ${key} is not an object`);
+            }
+            break;
+
         default:
             throw new Error(`Acción desconocida: ${action}`);
     }
 }
 
-function executeActionAt(storage: any, pathArray: string[], path_resolver: string, action: string, value: any) {
+function executeActionAt(storage: any, pathArray: string[], path_resolver: string, data: StorageAPIDataAction) {
+    const { action } = data;
 
     function recursiveAction(target: any, keys: string[]) {
         const key = keys[0];
 
         if (keys.length === 1) {
-            doActionOn(target, key, action, value);
+            doActionOn(target, key, data);
             return;
         }
 
@@ -119,11 +137,9 @@ export const POST: APIRoute = async ({ request, locals, redirect }) => {
         const {
             path,
             path_resolver = "reject",
-            action,
-            value,
         } = data_action;
         try {
-            executeActionAt(storage, path, path_resolver, action, value);
+            executeActionAt(storage, path, path_resolver, data_action);
         } catch (error: any) {
             errors.push(error.message);
         }

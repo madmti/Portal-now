@@ -34,8 +34,8 @@ type DoesNotAttachClass = {
 }
 type DoesAttachClass = {
     can_attach_class: true;
-    get_class_attaching_data: (clas: string) => StorageAPIDataAction[];
-    get_class_deattaching_data: (clas: string) => StorageAPIDataAction[];
+    get_class_attaching_data: (clas: string, storage: UniTrackStorage) => StorageAPIDataAction[];
+    get_class_deattaching_data: (clas: string, storage: UniTrackStorage) => StorageAPIDataAction[];
 }
 export type UniTrackPluginConfig = (DoesAttachClass | DoesNotAttachClass) & {
     id: string;

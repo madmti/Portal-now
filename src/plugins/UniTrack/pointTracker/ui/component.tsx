@@ -1,38 +1,8 @@
 import type { tPublicUserData } from '@lib/plugins';
 import type { UniTrackStorage } from '@plugins/UniTrack/config';
 import ProgressCard from './progressCard';
+import { MissingPlugin, NoClasses } from '@plugins/UniTrack/components';
 
-function MissingPlugin() {
-	return (
-		<div class="flex flex-col items-center justify-center w-full">
-			<h2 class="text-lg">
-				No has instalado el plugin{' '}
-				<span class="text-accent">UniTrack Manager</span>
-			</h2>
-			<a href="/home/plugins/" class="btn btn-primary btn-wide mt-4">
-				<span class="icon-[material-symbols--search] text-xl" />
-				Buscar
-			</a>
-		</div>
-	);
-}
-
-function NoClasses() {
-	return (
-		<div class="flex flex-col items-center justify-center w-full">
-			<h2 class="text-lg">
-				No tienes ninguna clase registrada en{' '}
-				<span class="text-accent">UniTrack Manager</span>
-			</h2>
-			<a
-				href="/home/settings/unitrack_manager/"
-				class="btn btn-primary btn-wide mt-4"
-			>
-				Agregar una clase
-			</a>
-		</div>
-	);
-}
 
 export default function PointTracker({
 	user,

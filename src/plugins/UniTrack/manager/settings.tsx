@@ -73,17 +73,19 @@ function AddClass() {
 function DeleteClass({
 	classname,
 	unitrack_plugins,
+	unitrack_storage,
 }: {
 	classname: string;
 	unitrack_plugins: tPlugin[];
+	unitrack_storage: UniTrackStorage;
 }) {
 	const [error, setError] = useState<string | null>(null);
 
 	const deleteClass = async () => {
-		const res = await requestDeleteClass(classname, unitrack_plugins);
+		const res = await requestDeleteClass(classname, unitrack_plugins, unitrack_storage);
 
 		if (res.ok) {
-			location.reload();
+				location.reload();
 		} else {
 			setError('Error al eliminar la clase');
 			setTimeout(() => {
@@ -155,6 +157,7 @@ export default function UniTrackManagerSettings({
 								<DeleteClass
 									classname={clas}
 									unitrack_plugins={unitrackPlugins}
+									unitrack_storage={storage}
 								/>
 							</div>
 						</div>

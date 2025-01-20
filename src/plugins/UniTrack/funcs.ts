@@ -1,5 +1,5 @@
 import { plugins, requestStorageAPI, type tPlugin } from "@lib/plugins";
-import { unitrack_extension_group, unitrack_storage_group, UniTrackInternalPlugins } from "./config";
+import { unitrack_extension_group, unitrack_storage_group, UniTrackInternalPlugins, type UniTrackStorage } from "./config";
 import type { StorageAPIBody } from "pages/api/plugins/storage_api";
 
 export function getUniTrackPlugins(plugins_ids: Set<string>) {
@@ -26,7 +26,7 @@ export async function requestAddClass(clas: string) {
         ],
     });
 }
-export async function requestDeleteClass(clas: string, unitrack_plugins: tPlugin[]) {
+export async function requestDeleteClass(clas: string, unitrack_plugins: tPlugin[], unitrack_storage: UniTrackStorage) {
     const body: StorageAPIBody = {
         storage_group: unitrack_storage_group,
         data: [],
@@ -34,8 +34,9 @@ export async function requestDeleteClass(clas: string, unitrack_plugins: tPlugin
 
     unitrack_plugins.forEach((plugin) => {
         const internal_plugin = UniTrackInternalPlugins[plugin.id];
-        if (internal_plugin.can_attach_class)
-            body.data.concat(internal_plugin.get_class_deattaching_data(clas));
+        if (internal_plugin.can_attach_class) {
+            body.data.push(...internal_plugin.get_class_deattaching_data(clas, unitrack_storage));
+        }
     });
 
     body.data.push({
