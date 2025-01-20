@@ -1,8 +1,16 @@
 import type { APIRoute } from "astro";
-import { db, PluginStorage, sql, Users } from "astro:db";
+import { db, PluginStorage, sql } from "astro:db";
 
-export type StorageAPIAction = "push" | "add if not exists" | "splice" | "set" | "delete" | "delete where object";
-export type StorageAPIPathResolvers = "reject" | "create";
+export type StorageAPIAction = 
+        "push" | 
+        "add if not exists" | 
+        "splice" | 
+        "set" | 
+        "delete" | 
+        "delete where object";
+export type StorageAPIPathResolvers = 
+        "reject" | 
+        "create";
 
 export interface StorageAPIDataAction {
     path: string[];
@@ -129,7 +137,7 @@ export const POST: APIRoute = async ({ request, locals, redirect }) => {
     if (!result.length) {
         return new Response("Storage group not found", { status: 404 });
     }
-    const { storage } = result[0];
+    let { storage } = result[0];
 
     let errors: string[] = [];
 
@@ -139,7 +147,11 @@ export const POST: APIRoute = async ({ request, locals, redirect }) => {
             path_resolver = "reject",
         } = data_action;
         try {
-            executeActionAt(storage, path, path_resolver, data_action);
+            if (!path.length) {
+                storage = data_action.value;
+            } else {
+                executeActionAt(storage, path, path_resolver, data_action);
+            }
         } catch (error: any) {
             errors.push(error.message);
         }

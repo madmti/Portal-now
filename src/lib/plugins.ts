@@ -1,3 +1,4 @@
+import { community_plugins } from "@plugins/community_plugins";
 import { UniTrackPlugins } from "@plugins/UniTrack/config";
 import type { StorageAPIBody } from "pages/api/plugins/storage_api";
 
@@ -17,7 +18,7 @@ export interface tPublicUserData {
     installed_plugins: Set<string>;
 }
 
-export type tPluginFrameWork = 'preact' | 'astro-server' | 'astro-client';
+export type tPluginFrameWork = 'preact';
 
 export interface tPlugin {
     id: string;
@@ -34,26 +35,7 @@ export interface tPlugin {
     documentation?: string;
     version?: string;
 }
-export const server_side_rendering_frameworks: tPluginFrameWork[] = ['astro-server'];
 export const plugins: Record<string, tPlugin> = {
-    'test_plugin': {
-        id: 'test_plugin',
-        name: 'Test Plugin',
-        description: 'This is a test plugin',
-        icon: 'testPlugin.svg',
-        framework: 'preact',
-        component: 'testPlugin/component.tsx',
-        settings: 'testPlugin/settings.tsx',
-        storage_group: 'test_plugin_storage',
-        default_storage: { display_text: 'Hello, World!' },
-    },
-    'block_clock': {
-        id: 'block_clock',
-        name: 'Block Clock',
-        description: 'A simple clock that displays the current block',
-        icon: 'blockClock.svg',
-        framework: 'preact',
-        component: 'blockClock/component.tsx',
-    },
+    ...Object.fromEntries(community_plugins.map((plugin) => [plugin.id, plugin])),
     ...UniTrackPlugins,
 };

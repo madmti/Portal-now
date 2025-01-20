@@ -137,4 +137,12 @@ import { ClientRouter } from 'astro:transitions';
 	:is(#doc-content-wrapper, #doc-small-content-wrapper) #badge-neutral {
 		@apply badge badge-neutral;
 	}
+
+	:is(#doc-content-wrapper, #doc-small-content-wrapper) .code-title {
+		position: absolute;
+		top: 15px;
+		left: 90px;
+		@apply text-primary;
+		@apply italic;
+	}
 </style>

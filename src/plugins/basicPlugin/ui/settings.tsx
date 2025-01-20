@@ -1,4 +1,4 @@
-export default function TestPluginSettings() {
+export default function BasicPluginSettings() {
 	return (
 		<form class="w-full" id="settings" onSubmit={(e) => e.preventDefault()}>
 			<label
@@ -12,7 +12,7 @@ export default function TestPluginSettings() {
 					type="text"
 					class="bg-neutral text-base-content p-2 rounded-lg"
 					placeholder="Enter text to display"
-                    required
+					required
 				/>
 			</label>
 		</form>
