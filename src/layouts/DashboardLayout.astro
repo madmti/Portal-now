@@ -2,8 +2,16 @@
 import Burger from '@components/Burger.astro';
 import Layout from './Layout.astro';
 
+interface Props {
+	hideSidebar?: boolean;
+}
+
+const { hideSidebar } = Astro.props;
 const { user } = Astro.locals;
 const path = Astro.url.pathname.split('/').slice(2, -1);
+const lastPathName = decodeURIComponent(path[path.length - 1]);
+const lastCapitalized =
+	lastPathName[0].toUpperCase() + lastPathName.slice(1).toLowerCase();
 ---
 
 <Layout>
@@ -18,42 +26,60 @@ const path = Astro.url.pathname.split('/').slice(2, -1);
 					</p>
 				</h1>
 
-				<Burger />
+				{!hideSidebar && <Burger />}
+				{!!hideSidebar && <span class="btn btn-square opacity-0"/>}
 			</div>
-			<nav class="py-2 px-4 w-full bg-[#0F1215] flex items-center gap-4">
-				<h2>Estas en</h2>
-				{//@ts-ignore
-					path.map((route, idx, arr) => (
-						<>
-							{idx !== 0 && <span class="text-primary">/</span>}
-							<a
-								href={`/home/${arr.slice(0, idx + 1).join('/')}/`}
-								class={`btn btn-sm ${idx === arr.length - 1 ? 'btn-primary' : ''}`}
-							>{`${route[0].toUpperCase()}${route.slice(1).toLowerCase()}`}</a>
-						</>
-					))
+			<nav class="py-2 px-4 bg-[#0F1215] flex items-center gap-4 flex-wrap">
+				<h2>En</h2>
+				{
+					//@ts-ignore
+					path.map((route, idx, arr) => {
+						const routeName = decodeURIComponent(route);
+						const capitalized =
+							routeName[0].toUpperCase() + routeName.slice(1).toLowerCase();
+						return (
+							<>
+								{idx !== 0 && <span class="text-primary">/</span>}
+								{idx === arr.length - 1 ? (
+									<span class="btn btn-sm btn-primary">{capitalized}</span>
+								) : (
+									<a
+										href={`/home/${arr.slice(0, idx + 1).join('/')}/`}
+										class={`btn btn-sm ${idx === arr.length - 1 ? 'btn-primary' : ''}`}
+									>
+										{capitalized}
+									</a>
+								)}
+							</>
+						);
+					})
 				}
 			</nav>
 		</header>
 		<div class="overflow-y-auto">
 			<slot name="content" />
 		</div>
-		<aside
+		{!hideSidebar && <aside
 			id="side-bar"
 			class="flex flex-col max-w-[20rem] w-full h-full z-30 absolute top-0 bg-[#191E24] bg-clip-border p-4 shadow-xl"
 		>
-			<h3 class="block text-2xl font-semibold">Dashboard</h3>
+			<h3 class="block text-2xl font-semibold">{lastCapitalized}</h3>
 			<slot name="sidebar" />
 		</aside>
 		<label
 			id="side-bar-shadow"
 			for="burger"
 			class="bg-black bg-opacity-70 absolute h-full w-full z-20 cursor-pointer"
-		></label>
+		></label>}
 	</div>
 </Layout>
 
 <style>
+	html,
+	body {
+		width: 100vw !important;
+		height: 100vh !important;
+	}
 	#side-bar {
 		transition: all 0.3s;
 		overflow: hidden;

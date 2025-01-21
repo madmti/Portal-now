@@ -1,0 +1,86 @@
+---
+import DnDColumn from '@components/home/DnDColumn';
+import GeneralSideBar from '@components/home/GeneralSideBar.astro';
+import DashboardLayout from '@layouts/DashboardLayout.astro';
+
+const { user } = Astro.locals;
+const { preferences } = user;
+const plugins_dist = user.plugins;
+const user_sections = Object.keys(user.plugins).filter(
+	(section) => section !== '_!$dashboard'
+);
+---
+
+<DashboardLayout>
+	<div slot="content" class="w-full h-full flex flex-col gap-4 p-4">
+		<h1 class="text-3xl font-bold">Preferences</h1>
+		<form
+			class="flex flex-col gap-4 w-full"
+			action="/api/preferences/"
+			method="POST"
+		>
+			<label class="flex items-center gap-2 ml-8" for="show_plugins_names">
+				<input
+					type="checkbox"
+					name="show_plugins_names"
+					id="show_plugins_names"
+					class="checkbox"
+					checked={preferences['show_plugins_names']}
+				/>
+				<span>Show Plugins Names</span>
+			</label>
+			<div class="flex flex-wrap justify-center w-full gap-4">
+				<button type="submit" class="btn btn-wide btn-primary">Save</button>
+				<a href="/home/dashboard/" class="btn btn-wide btn-error">Cancel</a>
+			</div>
+		</form>
+		<div class="flex flex-col flex-wrap gap-4">
+			{
+				Object.entries(plugins_dist).map(([section, plugins_ids]) => (
+					<DnDColumn
+						section={section}
+						plugins_ids={plugins_ids}
+						client:only="preact"
+					/>
+				))
+			}
+			<button
+				class="btn btn-wide btn-outline self-center mt-4"
+				onclick="my_modal_2.showModal()"
+			>
+				Agregar una seccion
+			</button>
+			<dialog id="my_modal_2" class="modal">
+				<div class="modal-box">
+					<form
+						class="flex flex-col gap-4"
+						action="/api/plugins/add_section/"
+						method="POST"
+					>
+						<h1 class="text-xl">Seccion</h1>
+						<input
+							type="text"
+							placeholder="Nombre de la seccion"
+							class="input input-bordered w-full"
+							name="section_name"
+							id="section_name"
+						/>
+						<button class="btn btn-primary" type="submit"> Agregar </button>
+					</form>
+				</div>
+				<form method="dialog" class="modal-backdrop">
+					<button>close</button>
+				</form>
+			</dialog>
+		</div>
+	</div>
+	<GeneralSideBar
+		slot="sidebar"
+		main_links={[
+			['Dashboard', '/home/dashboard/'],
+			['Plugins', '/home/plugins/'],
+			['Documentacion', '/docs/001_intro/'],
+		]}
+		sections={user_sections}
+	/>
+</DashboardLayout>

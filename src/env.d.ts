@@ -13,6 +13,14 @@ declare namespace App {
              */
             readonly uid: string;
             /**
+             * The user's enabled plugins.
+             */
+            readonly plugins: Record<string, string[]>;
+            /**
+             * The user's preferences.
+             */
+            readonly preferences: Record<string, any>;
+            /**
              * The user's primary email, if set.
              */
             readonly email?: string;
@@ -86,12 +94,6 @@ declare namespace App {
              * The multi-factor related properties for the current user, if available.
              */
             readonly multiFactor?: MultiFactorSettings;
-            /**
-             * Returns a JSON-serializable representation of this object.
-             *
-             * @returns A JSON-serializable representation of this object.
-             */
-            toJSON(): object;
         };
     }
 }

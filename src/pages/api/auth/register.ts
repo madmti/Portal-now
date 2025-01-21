@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { getAuth } from "firebase-admin/auth";
 import { app } from "../../../firebase/server";
+import { db, Users } from "astro:db";
 
 export const POST: APIRoute = async ({ request, redirect }) => {
 
@@ -19,11 +20,13 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     }
 
     try {
-        await auth.createUser({
+        const user = await auth.createUser({
             email,
             password,
             displayName: name,
         });
+        await db.insert(Users).values({ id: user.uid });
+        
     } catch (error: any) {
 
         return new Response(
