@@ -1,0 +1,56 @@
+---
+import GeneralSideBar from '@components/home/GeneralSideBar.astro';
+import PluginLoader from '@components/home/PluginLoader';
+import DashboardLayout from '@layouts/DashboardLayout.astro';
+import { getPluginStorage } from '@lib/database';
+import { plugins } from '@lib/plugins';
+import { getPublicUserData } from '@lib/user';
+
+const date = new Date();
+const { user } = Astro.locals;
+const { section } = Astro.params;
+
+const user_plugins = user.plugins[section ?? ''].map((id) => plugins[id]);
+const user_sections = Object.keys(user.plugins).filter(
+	(section) => section !== '_!$dashboard'
+);
+const user_preferences = user.preferences;
+const public_user_data = getPublicUserData(user);
+const plugins_storage = await getPluginStorage(user.uid);
+---
+
+<DashboardLayout>
+	<main slot="content" class="w-full h-full flex flex-col gap-4 relative">
+		<header
+			id="dashboard-header"
+			class="p-4 w-full flex justify-between border border-neutral bg-[#0C0F11] fixed z-[1]"
+		>
+			<div>
+				<div class="text-3xl flex flex-wrap"></div>
+				<p class="text-lg text-gray-500">{date.toLocaleDateString()}</p>
+			</div>
+		</header>
+		<section
+			id="dashboard-section"
+			class="flex flex-col gap-4 p-4 items-center mt-[50px] z-0"
+		>
+			<PluginLoader
+				show_plugins_names={user_preferences['show_plugins_names']}
+				user_plugins={user_plugins}
+				public_user_data={public_user_data}
+				plugins_storage={plugins_storage}
+				client:only="preact"
+			/>
+		</section>
+	</main>
+	<GeneralSideBar
+		slot="sidebar"
+		main_links={[
+			['Dashboard', '/home/dashboard/'],
+			['Plugins', '/home/plugins/'],
+			['Configuracion', '/home/settings/'],
+			['Documentacion', '/docs/001_intro/'],
+		]}
+		sections={user_sections}
+	/>
+</DashboardLayout>
