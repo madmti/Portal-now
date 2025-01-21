@@ -20,9 +20,14 @@ const {
 	version,
 	extension_group,
 } = plugin;
-const Documentacion = await import(
-	/* @vite-ignore */ `../../../plugins/${documentation}`
-);
+let Documentacion: any = { default: () => null };
+try {
+	Documentacion = await import(
+		/* @vite-ignore */ `../../../plugins/${documentation}`
+	);
+} catch (error) {
+	Documentacion = { default: () => 'Documentacion no encontrada' };
+}
 ---
 
 <DashboardLayout>
@@ -40,6 +45,7 @@ const Documentacion = await import(
 				</h1>
 			</div>
 			<AddPlugin
+				client:only="preact"
 				id={plugin.id}
 				storage_group={storage_group}
 				default_storage={default_storage}
@@ -59,7 +65,7 @@ const Documentacion = await import(
 			}
 		</div>
 		<span class="divider m-0 h-0"></span>
-		<main id="doc-small-content-wrapper" >
+		<main id="doc-small-content-wrapper">
 			<Documentacion.default />
 		</main>
 	</div>

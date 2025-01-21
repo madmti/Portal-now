@@ -8,8 +8,9 @@ import { getPublicUserData } from '@lib/user';
 
 const date = new Date();
 const { user } = Astro.locals;
+const { section } = Astro.params;
 
-const user_plugins = user.plugins['_!$dashboard'].map((id) => plugins[id]);
+const user_plugins = user.plugins[section ?? ''].map((id) => plugins[id]);
 const user_sections = Object.keys(user.plugins).filter(
 	(section) => section !== '_!$dashboard'
 );
@@ -45,6 +46,7 @@ const plugins_storage = await getPluginStorage(user.uid);
 	<GeneralSideBar
 		slot="sidebar"
 		main_links={[
+			['Dashboard', '/home/dashboard/'],
 			['Plugins', '/home/plugins/'],
 			['Configuracion', '/home/settings/'],
 			['Documentacion', '/docs/001_intro/'],
