@@ -1,6 +1,6 @@
 import { requestStorageAPI } from "@lib/plugins";
 import type { PointSistemAlgorithm, PointTrackerClas, PointTrackerOptions } from "./storage";
-import { unitrack_storage_group } from "../config";
+import { unitrack_storage_group, type UniTrackStorage } from "../config";
 import { PointTrackerConfig } from "./config";
 
 // ==================================================
@@ -84,20 +84,20 @@ export function calculateRestOfData(last_data: PointTrackerClas) {
 // ==================================================
 // ==================== REQUESTS ====================
 // ==================================================
-export async function requestAttachClass(clas: string) {
+export async function requestAttachClass(clas: string, storage: UniTrackStorage) {
     return requestStorageAPI({
         storage_group: unitrack_storage_group,
         data: PointTrackerConfig.can_attach_class
-            ? PointTrackerConfig.get_class_attaching_data(clas)
+            ? PointTrackerConfig.get_class_attaching_data(clas, storage)
             : [],
     });
 }
 
-export async function requestDeattachClass(clas: string) {
+export async function requestDeattachClass(clas: string, storage: UniTrackStorage) {
     return requestStorageAPI({
         storage_group: unitrack_storage_group,
         data: PointTrackerConfig.can_attach_class
-            ? PointTrackerConfig.get_class_deattaching_data(clas)
+            ? PointTrackerConfig.get_class_deattaching_data(clas, storage)
             : [],
     });
 }
