@@ -5,7 +5,7 @@ import DashboardLayout from '@layouts/DashboardLayout.astro';
 import { getPluginStorage } from '@lib/database';
 import { plugins } from '@lib/plugins';
 import { getPublicUserData } from '@lib/user';
-
+const mode = import.meta.env.MODE as 'development' | 'production';
 const { user } = Astro.locals;
 const current_plugin_id = Astro.params.plugin_id!;
 const current_plugin = plugins[current_plugin_id];
@@ -17,6 +17,7 @@ const plugins_storage = await getPluginStorage(user.uid);
 	<div slot="content" class="w-full h-full flex flex-col gap-4 p-4">
 		<h1 class="text-3xl font-bold">{current_plugin.name}</h1>
 		<PluginSettings
+			mode={mode}
 			client:only="preact"
 			plugin={current_plugin}
 			public_user_data={public_user_data}
