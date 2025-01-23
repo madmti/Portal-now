@@ -7,11 +7,13 @@ interface tPluginLoaded {
 }
 
 export default function PluginLoader({
+	mode,
 	public_user_data,
 	plugins_storage,
 	user_plugins,
 	show_plugins_names,
 }: {
+	mode: 'development' | 'production';
 	public_user_data: tPublicUserData;
 	plugins_storage: any;
 	user_plugins: tPlugin[];
@@ -26,9 +28,19 @@ export default function PluginLoader({
 					return { data: plugin };
 				}
 
-				const { default: Component } = await import(
-					/* @vite-ignore */ `../../plugins/${plugin.component}`
-				);
+				let Component;
+				if (mode === 'production') {
+					const { default: com } = await import(
+						/* @vite-ignore */ `/plugins/${plugin.component}.js`
+					);
+					Component = com;
+				} else {
+					const { default: com } = await import(
+						/* @vite-ignore */ `../../plugins/${plugin.component}`
+					);
+					Component = com;
+				}
+
 				return { data: plugin, component: Component };
 			})
 		);
