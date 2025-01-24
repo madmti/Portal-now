@@ -19,7 +19,8 @@ export const getStaticPaths = (async () => {
 
 const { doc } = Astro.props;
 const { Content } = await render(doc);
-const allDocs = await getCollection('docs');
+const allDocs = Array.from(await getCollection('docs'));
+allDocs.sort((doc_a, doc_b) => doc_a.slug.localeCompare(doc_b.slug));
 ---
 
 <DocLayout>

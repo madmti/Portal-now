@@ -31,9 +31,8 @@ tu propia configuracion y varias cosas mas.
   <pre data-prefix="11"><code>    settings?: string;</code></pre>
   <pre data-prefix="12"><code>    extension_group?: string;</code></pre>
   <pre data-prefix="13"><code>    custom_submitter?: boolean;</code></pre>
-  <pre data-prefix="14"><code>    documentation?: string;</code></pre>
-  <pre data-prefix="15"><code>    version?: string;</code></pre>
-  <pre data-prefix="16"><code>}</code></pre>
+  <pre data-prefix="14"><code>    version?: string;</code></pre>
+  <pre data-prefix="15"><code>}</code></pre>
 </div>
 
 <br/>
@@ -56,7 +55,6 @@ Frameworks disponibles para trabajar en plugins:
 - _default_storage?_ : Almacenamiento por defecto que se creara una vez se instale el plugin.
 - _extension_group?_ : Nombre del grupo de extensiones al que pertenece, si es que pertenece a uno.
 - _custom_submitter?_ : Verdadero si NO quieres utilizar el estandar de configuracion para tu plugin.
-- _documentation?_ : Ruta al archivo MarkDown que contiene la documentacion del plugin.
 - _version?_ : Version del plugin.
 
 # Props del componente

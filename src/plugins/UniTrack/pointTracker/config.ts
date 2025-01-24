@@ -9,7 +9,6 @@ const PointTrackerConfig: UniTrackPluginConfig = {
     component: "UniTrack/pointTracker/ui/component.tsx",
     settings: "UniTrack/pointTracker/ui/settings.tsx",
     custom_submitter: true,
-    documentation: "UniTrack/pointTracker/docs.md",
 
     can_attach_class: true,
     get_class_attaching_data: (clas: string, storage: UniTrackStorage) => [{

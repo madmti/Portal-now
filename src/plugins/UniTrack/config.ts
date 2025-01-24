@@ -44,7 +44,6 @@ export type UniTrackPluginConfig = (DoesAttachClass | DoesNotAttachClass) & {
     icon: string;
     component?: string;
     settings?: string;
-    documentation?: string;
     custom_submitter?: boolean;
     version?: string;
 }
@@ -66,7 +65,6 @@ export const UniTrackPlugins: Record<string, tPlugin> = Object.fromEntries(
         custom_submitter: value.custom_submitter,
         storage_group: unitrack_storage_group,
         default_storage: unitrack_default_storage,
-        documentation: value.documentation,
         version: value.version,
     }])
 );

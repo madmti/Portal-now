@@ -7,7 +7,7 @@ last_update: '20/01/25'
 Esta seccion esta destinada para desarrolladores
 </div>
 
-Para agregar documentacion a tu plugin simplemente deberas especificar la ruta al markdown que contiene tu documentacion.
+Para agregar documentacion a tu plugin simplemente deberas agregar un archivo markdown que se llame igual que el id de tu plugin
 
 <br/>
 
@@ -22,7 +22,7 @@ Para agregar documentacion a tu plugin simplemente deberas especificar la ruta a
   <pre data-prefix="7"><code>    display_text: 'Hola Mundo!',</code></pre>
   <pre data-prefix="8"><code>}</code></pre>
   <pre data-prefix="9"><code>export const BasicPluginConfig:tPlugin = {</code></pre>
-  <pre data-prefix="10"><code>    id: 'basic_plugin',</code></pre>
+  <pre data-prefix="10" class="text-primary"><code>    id: 'basic_plugin',</code></pre>
   <pre data-prefix="11"><code>    name: 'Basic Plugin',</code></pre>
   <pre data-prefix="12"><code>    description: 'This is a basic plugin',</code></pre>
   <pre data-prefix="13"><code>    icon: 'basicPlugin.svg',</code></pre>
@@ -30,19 +30,22 @@ Para agregar documentacion a tu plugin simplemente deberas especificar la ruta a
   <pre data-prefix="15"><code>    version: '1.0.0',</code></pre>
   <pre data-prefix="16"><code>    component: 'basicPlugin/ui/component.tsx',</code></pre>
   <pre data-prefix="17"><code>    settings: 'basicPlugin/ui/settings.tsx',</code></pre>
-  <pre data-prefix="18" class="bg-primary text-primary-content"><code>    documentation: 'basicPlugin/docs.md',</code></pre>
-  <pre data-prefix="19"><code>    storage_group: basic_plugin_storage_group,</code></pre>
-  <pre data-prefix="20"><code>    default_storage: basic_plugin_storage,</code></pre>
-  <pre data-prefix="21"><code>};</code></pre>
+  <pre data-prefix="18"><code>    storage_group: basic_plugin_storage_group,</code></pre>
+  <pre data-prefix="19"><code>    default_storage: basic_plugin_storage,</code></pre>
+  <pre data-prefix="20"><code>};</code></pre>
 </div>
 
 <br/>
 
 <div class="mockup-code">
-  <span class="code-title">docs.md</span>
-  <pre data-prefix="1"><code>&lt;span class="badge badge-accent"&gt;Tutorial&lt;/span&gt;</code></pre>
-  <pre data-prefix="2"><code></code></pre>
-  <pre data-prefix="3"><code>Esto es la documentacion del plugin _"Basic Plugin"_.</code></pre>
+  <span class="code-title">basic_plugin.md</span>
+  <pre data-prefix="1"><code>---</code></pre>
+  <pre data-prefix="2"><code>date: '24/01/25'</code></pre>
+  <pre data-prefix="3"><code>---</code></pre>
+  <pre data-prefix="4"><code></code></pre>
+  <pre data-prefix="5"><code>&lt;span class="badge badge-accent"&gt;Tutorial&lt;/span&gt;</code></pre>
+  <pre data-prefix="6"><code></code></pre>
+  <pre data-prefix="7"><code>Esto es la documentacion del plugin _"Basic Plugin"_.</code></pre>
 </div>
 
 <br/>
