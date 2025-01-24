@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { writeFile, readFile } from 'fs/promises';
+import { writeFile, readFile, mkdir } from 'fs/promises';
 import { plugins as plugins_config } from '../src/lib/plugins.ts';
 
 const plugins = Object.fromEntries(
@@ -22,7 +22,7 @@ export default function pluginsIntegration() {
   return {
     name: 'astro-plugins-integration',
     hooks: {
-      'astro:build:setup': async ({ vite, logger }:any) => {
+      'astro:build:setup': async ({ vite, logger, dir }: any) => {
         vite.build = vite.build || {};
         vite.build.rollupOptions = vite.build.rollupOptions || {};
         vite.build.rollupOptions.input = {
@@ -38,32 +38,51 @@ export default function pluginsIntegration() {
           ),
         };
 
+        vite.build.rollupOptions.plugins = [
+          ...(vite.build.rollupOptions.plugins || []),
+          {
+            name: 'capture-output-names',
+            // @ts-ignore
+            async generateBundle(outputOptions, bundle) {
+              const outputMap = {};
+              for (const [fileName, assetInfo] of Object.entries(bundle)) {
+                //@ts-ignore
+                if (assetInfo.type === 'chunk') {
+                  //@ts-ignore
+                  outputMap[assetInfo.name] = fileName;
+                }
+              }
+              await writeFile(resolve('dist', 'output-map.json'), JSON.stringify(outputMap, null, 2));
+            },
+          },
+        ];
+
         logger.info('✅ Plugins y configuraciones registrados para la compilación.');
       },
 
-      'astro:build:done': async ({ dir, logger }:any) => {
-        const pluginsDir = resolve(dir.pathname, 'plugins');
-        const outputDir = resolve('public/plugins');
+      'astro:build:done': async ({ dir, logger }: any) => {
+        await mkdir(resolve(dir.pathname, 'plugins'), { recursive: true });
+        const outputDir = resolve(dir.pathname, 'plugins');
+        const outputMap = JSON.parse(await readFile(resolve('dist', 'output-map.json'), 'utf-8'));
 
-        for (const [pluginName, paths] of Object.entries(plugins)) {
+        for (const [pluginId, paths] of Object.entries(plugins)) {
+          const pluginCompiledPath = outputMap[pluginId];
           if (paths.component) {
-            const componentInputPath = resolve(pluginsDir, `${pluginName}.js`);
-            const componentOutputPath = resolve(outputDir, `${pluginName}.js`);
+            const componentInputPath = resolve(dir.pathname, pluginCompiledPath);
+            const componentOutputPath = resolve(outputDir, `${pluginId}.js`);
             await writeFile(
               componentOutputPath,
               await readFile(componentInputPath),
               'utf-8'
             );
           }
-
+          
+          const settingsCompiledPath = outputMap[`${pluginId}_settings`];
           if (paths.settings) {
-            const settingsInputPath = resolve(
-              pluginsDir,
-              `${pluginName}_settings.js`
-            );
+            const settingsInputPath = resolve(dir.pathname, settingsCompiledPath);
             const settingsOutputPath = resolve(
               outputDir,
-              `${pluginName}_settings.js`
+              `${pluginId}_settings.js`
             );
             await writeFile(
               settingsOutputPath,
