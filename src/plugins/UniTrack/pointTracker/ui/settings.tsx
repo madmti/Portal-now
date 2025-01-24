@@ -30,7 +30,7 @@ export default function PointTrackerSettings({
 	);
 
 	async function attachClass(clase: string) {
-		const res = await requestAttachClass(clase);
+		const res = await requestAttachClass(clase, storage);
 		if (res.ok) {
 			location.reload();
 		} else {
@@ -54,7 +54,7 @@ export default function PointTrackerSettings({
 					</div>
 				)}
 				{tracked_classes.map((clase) => (
-					<EditCard name={clase} clase={point_tracker.track[clase]} />
+					<EditCard name={clase} clase={point_tracker.track[clase]} storage={storage} />
 				))}
 				<h1 class="text-2xl">Sin seguimiento</h1>
 				{not_tracked_classes.map((clase) => (

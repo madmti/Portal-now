@@ -6,6 +6,7 @@ import {
 	requestDeattachClass,
 	requestUpdateClass,
 } from '../funcs';
+import type { UniTrackStorage } from '@plugins/UniTrack/config';
 
 function updateEvaluationName(
 	index: number,
@@ -107,9 +108,11 @@ function updateEthaCurrentValue(
 export default function EditCard({
 	name,
 	clase,
+	storage,
 }: {
 	name: string;
 	clase: PointTrackerClas;
+	storage: UniTrackStorage;
 }) {
 	const [error, setError] = useState('');
 	const [dataState, setDataState] = useState(clase);
@@ -133,7 +136,7 @@ export default function EditCard({
 	}
 
 	async function deAttach(clase: string) {
-		const res = await requestDeattachClass(clase);
+		const res = await requestDeattachClass(clase, storage);
 		if (res.ok) {
 			location.reload();
 		} else {

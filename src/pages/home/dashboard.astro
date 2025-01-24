@@ -2,14 +2,16 @@
 import GeneralSideBar from '@components/home/GeneralSideBar.astro';
 import PluginLoader from '@components/home/PluginLoader';
 import DashboardLayout from '@layouts/DashboardLayout.astro';
-import { getPluginStorage } from '@lib/database';
-import { plugins } from '@lib/plugins';
+import { getPlugins, getPluginStorage } from '@lib/database';
 import { getPublicUserData } from '@lib/user';
 
 const date = new Date();
 const { user } = Astro.locals;
 
-const user_plugins = user.plugins['_!$dashboard'].map((id) => plugins[id]);
+const user_plugins = await getPlugins({
+	on_production: import.meta.env.PROD,
+	user_plugins: user.plugins['_!$dashboard'],
+});
 const user_sections = Object.keys(user.plugins).filter(
 	(section) => section !== '_!$dashboard'
 );

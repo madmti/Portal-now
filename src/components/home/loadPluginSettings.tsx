@@ -20,7 +20,7 @@ export default function PluginSettings({
 		}
 
 		const { default: Component } = await import(
-			/* @vite-ignore */ `../../plugins/${plugin.settings}`
+			/* @vite-ignore */ `/${plugin.settings}`
 		);
 		setComponent({ component: Component });
 	};

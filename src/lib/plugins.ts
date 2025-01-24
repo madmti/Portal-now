@@ -1,5 +1,5 @@
-import { community_plugins } from "@plugins/community_plugins";
-import { UniTrackPlugins } from "@plugins/UniTrack/config";
+import { community_plugins } from "../plugins/community_plugins";
+import { UniTrackPlugins } from "../plugins/UniTrack/config";
 import type { StorageAPIBody } from "pages/api/plugins/storage_api";
 
 export async function requestStorageAPI(body: StorageAPIBody) {
