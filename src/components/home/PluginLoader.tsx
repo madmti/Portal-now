@@ -12,12 +12,14 @@ export default function PluginLoader({
 	plugins_storage,
 	user_plugins,
 	show_plugins_names,
+	plugins_path,
 }: {
 	mode: 'development' | 'production';
 	public_user_data: tPublicUserData;
 	plugins_storage: any;
 	user_plugins: tPlugin[];
 	show_plugins_names: boolean;
+	plugins_path: Record<string, string>;
 }) {
 	const [plugins, setPlugins] = useState<tPluginLoaded[]>([]);
 
@@ -31,7 +33,7 @@ export default function PluginLoader({
 				let Component;
 				if (mode === 'production') {
 					const { default: com } = await import(
-						/* @vite-ignore */ `/plugins/${plugin.id}.js`
+						/* @vite-ignore */ plugins_path[plugin.id]
 					);
 					Component = com;
 				} else {

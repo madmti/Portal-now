@@ -30,15 +30,15 @@ export default function pluginsIntegration() {
           ...Object.fromEntries(
             //@ts-ignore
             Object.entries(plugins).flatMap(([pluginId, paths]) => [
-              paths.component ? [pluginId, paths.component] : null,
+              paths.component ? [`_$!plugin_component_${pluginId}`, paths.component] : null,
               paths.settings
-                ? [`${pluginId}_settings`, paths.settings]
+                ? [`_$!plugin_component_${pluginId}_settings`, paths.settings]
                 : null,
             ].filter(Boolean))
           ),
         };
 
-        vite.build.rollupOptions.plugins = [
+/*         vite.build.rollupOptions.plugins = [
           ...(vite.build.rollupOptions.plugins || []),
           {
             name: 'capture-output-names',
@@ -52,11 +52,10 @@ export default function pluginsIntegration() {
                   outputMap[assetInfo.name] = fileName;
                 }
               }
-              process.env.PUBLIC_OUTPUT_MAP = JSON.stringify(outputMap);
-              /* await writeFile(resolve('../','output', 'output-map.json'), JSON.stringify(outputMap, null, 2)); */
+              await writeFile(resolve('../','output', 'output-map.json'), JSON.stringify(outputMap, null, 2));
             },
           },
-        ];
+        ]; */
 
         logger.info('✅ Plugins y configuraciones registrados para la compilación.');
       },
