@@ -27,7 +27,7 @@ export default function PluginLoader({
 				}
 
 				const { default: Component } = await import(
-					/* @vite-ignore */ plugin.component
+					/* @vite-ignore */ `/${plugin.component}`
 				);
 
 				return { data: plugin, component: Component };

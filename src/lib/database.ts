@@ -1,4 +1,4 @@
-import { db, PluginsPath, PluginStorage, sql } from "astro:db";
+import { db, PluginsPath, PluginStorage, sql, inArray } from "astro:db";
 import { plugins, type tPlugin } from "./plugins";
 
 export async function getPluginStorage(user_uid: string) {
@@ -13,8 +13,7 @@ export async function getPluginStorage(user_uid: string) {
 }
 
 export async function getPluginsPaths(plugin_ids: string[]) {
-    const query = sql`id in (${plugin_ids.join(', ')})`;
-    const plugins_paths = await db.select().from(PluginsPath).where(query);
+    const plugins_paths = await db.select().from(PluginsPath).where(inArray(PluginsPath.id, plugin_ids));
     return plugins_paths.reduce((acc, plugin_path) => {
         acc[plugin_path.id] = plugin_path.path;
         return acc;
@@ -38,10 +37,9 @@ export async function getPlugins({ on_production, on_settings, user_plugins }: {
         const plugin_db_id = `plugin_component_${plugin_id}${on_settings ? '_settings' : ''}`;
         const plugin_path = plugins_paths[plugin_db_id];
         const plugin = plugins[plugin_id];
-        if (!plugin_path) return null;
         return {
             ...plugin,
-            [on_settings ? 'settings' : 'component']: `/${plugin_path}`,
+            [on_settings ? 'settings' : 'component']: plugin_path,
         }
     }).filter(Boolean) as tPlugin[];
 }
