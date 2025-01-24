@@ -38,9 +38,10 @@ export async function getPlugins({ on_production, on_settings, user_plugins }: {
         const plugin_db_id = `plugin_component_${plugin_id}${on_settings ? '_settings' : ''}`;
         const plugin_path = plugins_paths[plugin_db_id];
         const plugin = plugins[plugin_id];
+        if (!plugin_path) return null;
         return {
             ...plugin,
             [on_settings ? 'settings' : 'component']: `/${plugin_path}`,
         }
-    }).filter((plug) => on_settings ? plug.settings !== '/undefined' : plug.component !== '/undefined');
+    }).filter(Boolean) as tPlugin[];
 }
