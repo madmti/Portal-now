@@ -22,7 +22,7 @@ export default function pluginsIntegration() {
   return {
     name: 'astro-plugins-integration',
     hooks: {
-      'astro:build:setup': async ({ vite, logger, dir }: any) => {
+      'astro:build:setup': async ({ vite, logger }: any) => {
         vite.build = vite.build || {};
         vite.build.rollupOptions = vite.build.rollupOptions || {};
         vite.build.rollupOptions.input = {
@@ -52,7 +52,8 @@ export default function pluginsIntegration() {
                   outputMap[assetInfo.name] = fileName;
                 }
               }
-              await writeFile(resolve('../','output', 'output-map.json'), JSON.stringify(outputMap, null, 2));
+              process.env.PUBLIC_OUTPUT_MAP = JSON.stringify(outputMap);
+              /* await writeFile(resolve('../','output', 'output-map.json'), JSON.stringify(outputMap, null, 2)); */
             },
           },
         ];
@@ -60,7 +61,7 @@ export default function pluginsIntegration() {
         logger.info('✅ Plugins y configuraciones registrados para la compilación.');
       },
 
-      'astro:build:done': async ({ dir, logger }: any) => {
+      /* 'astro:build:done': async ({ dir, logger }: any) => {
         await mkdir(resolve(dir.pathname, '../','output', 'plugins'), { recursive: true });
         const outputDir = resolve(dir.pathname, '../','output', 'plugins');
         const outputMap = JSON.parse(await readFile(resolve('../','output', 'output-map.json'), 'utf-8'));
@@ -93,7 +94,7 @@ export default function pluginsIntegration() {
         }
 
         logger.info('📦 Plugins y configuraciones generados y movidos a /public/plugins');
-      },
+      }, */
     },
   };
 }

@@ -16,4 +16,9 @@ export default defineConfig({
     integrations: [tailwind(), preact(), db(), pluginsIntegration()],
     output: 'server',
     adapter: vercel(),
+    vite: {
+        define: {
+            'process.env': process.env
+        }
+    }
 });

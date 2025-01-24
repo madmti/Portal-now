@@ -6,6 +6,9 @@ import ReleaseNote from '@components/ReleaseNote.astro';
 export const prerender = true;
 const releaseNotes = await getCollection('updates');
 releaseNotes.reverse();
+
+console.log('process.env', process.env);
+console.log('import.meta.env', import.meta.env);
 ---
 
 <Layout>
