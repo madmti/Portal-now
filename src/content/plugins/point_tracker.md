@@ -1,4 +1,6 @@
-
+---
+date: '24/01/25'
+---
 # Conectar una clase
 
 Para conectar una clase primero debes crearla en [UniTrack manager](/home/settings/unitrack_manager/), luego tus clases de _"UniTrack"_

@@ -1,6 +1,11 @@
 import { resolve } from 'path';
-import { writeFile, readFile, mkdir } from 'fs/promises';
 import { plugins as plugins_config } from '../src/lib/plugins.ts';
+import { createClient } from '@libsql/client';
+
+const db = createClient({
+  url: import.meta.env.VITE_DB_REMOTE_URL ?? '',
+  authToken: import.meta.env.VITE_DB_APP_TOKEN ?? '',
+});
 
 const plugins = Object.fromEntries(
   Object.entries(plugins_config).map(([pluginId, plugin]) => {
@@ -22,7 +27,7 @@ export default function pluginsIntegration() {
   return {
     name: 'astro-plugins-integration',
     hooks: {
-      'astro:build:setup': async ({ vite, logger, dir }: any) => {
+      'astro:build:setup': async ({ vite, logger }: any) => {
         vite.build = vite.build || {};
         vite.build.rollupOptions = vite.build.rollupOptions || {};
         vite.build.rollupOptions.input = {
@@ -30,13 +35,15 @@ export default function pluginsIntegration() {
           ...Object.fromEntries(
             //@ts-ignore
             Object.entries(plugins).flatMap(([pluginId, paths]) => [
-              paths.component ? [pluginId, paths.component] : null,
+              paths.component ? [`plugin_component_${pluginId}`, paths.component] : null,
               paths.settings
-                ? [`${pluginId}_settings`, paths.settings]
+                ? [`plugin_component_${pluginId}_settings`, paths.settings]
                 : null,
             ].filter(Boolean))
           ),
         };
+
+        await db.execute("DELETE FROM PluginsPath");
 
         vite.build.rollupOptions.plugins = [
           ...(vite.build.rollupOptions.plugins || []),
@@ -48,51 +55,24 @@ export default function pluginsIntegration() {
               for (const [fileName, assetInfo] of Object.entries(bundle)) {
                 //@ts-ignore
                 if (assetInfo.type === 'chunk') {
+                  if (fileName.endsWith('.mjs') || !fileName.startsWith('_astro') || !fileName.includes('plugin_component')) continue;
                   //@ts-ignore
                   outputMap[assetInfo.name] = fileName;
                 }
               }
-              await writeFile(resolve('dist', 'output-map.json'), JSON.stringify(outputMap, null, 2));
+              for (const [pluginId, path] of Object.entries(outputMap)) {
+                console.log(pluginId, path);
+                await db.execute({
+                  sql: "INSERT INTO PluginsPath VALUES ($1, $2)",
+                  args: [pluginId, path as string]
+                });
+              }
             },
           },
         ];
 
+
         logger.info('✅ Plugins y configuraciones registrados para la compilación.');
-      },
-
-      'astro:build:done': async ({ dir, logger }: any) => {
-        await mkdir(resolve(dir.pathname, 'plugins'), { recursive: true });
-        const outputDir = resolve(dir.pathname, 'plugins');
-        const outputMap = JSON.parse(await readFile(resolve('dist', 'output-map.json'), 'utf-8'));
-
-        for (const [pluginId, paths] of Object.entries(plugins)) {
-          const pluginCompiledPath = outputMap[pluginId];
-          if (paths.component) {
-            const componentInputPath = resolve(dir.pathname, pluginCompiledPath);
-            const componentOutputPath = resolve(outputDir, `${pluginId}.js`);
-            await writeFile(
-              componentOutputPath,
-              await readFile(componentInputPath),
-              'utf-8'
-            );
-          }
-          
-          const settingsCompiledPath = outputMap[`${pluginId}_settings`];
-          if (paths.settings) {
-            const settingsInputPath = resolve(dir.pathname, settingsCompiledPath);
-            const settingsOutputPath = resolve(
-              outputDir,
-              `${pluginId}_settings.js`
-            );
-            await writeFile(
-              settingsOutputPath,
-              await readFile(settingsInputPath),
-              'utf-8'
-            );
-          }
-        }
-
-        logger.info('📦 Plugins y configuraciones generados y movidos a /public/plugins');
       },
     },
   };

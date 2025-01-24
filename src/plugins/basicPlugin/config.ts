@@ -17,7 +17,6 @@ export const BasicPluginConfig:tPlugin = {
     
     component: 'basicPlugin/ui/component.tsx',
     settings: 'basicPlugin/ui/settings.tsx',
-    documentation: 'basicPlugin/docs.md',
 
     storage_group: basic_plugin_storage_group,
     default_storage: basic_plugin_storage,

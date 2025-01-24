@@ -14,7 +14,14 @@ const docPost = defineCollection({
     }),
 });
 
+const pluginPost = defineCollection({
+    schema: z.object({
+        date: z.string(),
+    }),
+});
+
 export const collections = {
     'updates': updatePost,
     'docs': docPost,
+    'plugins': pluginPost,
 };

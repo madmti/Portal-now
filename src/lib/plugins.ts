@@ -32,7 +32,6 @@ export interface tPlugin {
     settings?: string;
     extension_group?: string;
     custom_submitter?: boolean;
-    documentation?: string;
     version?: string;
 }
 export const plugins: Record<string, tPlugin> = {

@@ -3,7 +3,7 @@
 interface ImportMetaEnv {
     readonly PUBLIC_VERCEL_URL: string
     readonly PUBLIC_FIREBASE_CREDENTIALS: string;
-    readonly MODE: 'development' | 'production';
+    readonly PROD?: boolean;
 }
 
 declare namespace App {

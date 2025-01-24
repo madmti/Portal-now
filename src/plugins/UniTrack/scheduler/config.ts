@@ -10,7 +10,6 @@ const SchedulerConfig: UniTrackPluginConfig = {
     component: "UniTrack/scheduler/ui/component.tsx",
     settings: "UniTrack/scheduler/ui/settings.tsx",
     custom_submitter: true,
-    documentation: "UniTrack/scheduler/docs.md",
     version: "0.0.1",
 
     can_attach_class: true,

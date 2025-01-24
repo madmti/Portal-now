@@ -29,13 +29,12 @@ const { id, plugin, user_sections, plugins } = Astro.props;
 				user_sections={user_sections}
 				plugins={plugins}
 			/>
-			{
-				!!plugin.documentation && (
-					<a href={`/home/plugins/${plugin.id}/`} class="btn btn-square btn-accent btn-outline">
-						<span class="icon-[material-symbols--docs] text-xl" />
-					</a>
-				)
-			}
+			<a
+				href={`/home/plugins/${plugin.id}/`}
+				class="btn btn-square btn-accent btn-outline"
+			>
+				<span class="icon-[material-symbols--docs] text-xl"></span>
+			</a>
 		</div>
 	</header>
 	<p class="text-md max-w-[90%]">{plugin.description}</p>
