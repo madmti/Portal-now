@@ -2,20 +2,6 @@ import { community_plugins } from "../plugins/community_plugins";
 import { UniTrackPlugins } from "../plugins/UniTrack/config";
 import type { StorageAPIBody } from "pages/api/plugins/storage_api";
 
-export function findPluginPathById(pluginId: string) {
-    const pluginPrefix = `_$!plugin_component_${pluginId}`;
-    const files = import.meta.glob('/_astro/*.js', { eager: true });
-  
-    for (const filePath in files) {
-      const fileName = filePath.split('/').pop();
-      if (fileName && fileName.startsWith(pluginPrefix) && fileName.endsWith('.js')) {
-        return `/_astro/${fileName}`;
-      }
-    }
-  
-    return null;
-  }
-
 export async function requestStorageAPI(body: StorageAPIBody) {
     return fetch('/api/plugins/storage_api/', {
         method: 'POST',

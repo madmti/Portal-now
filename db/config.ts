@@ -29,6 +29,13 @@ const PluginStorage = defineTable({
   }
 });
 
+const PluginsPath = defineTable({
+  columns: {
+    id: column.text({ primaryKey: true }),
+    path: column.text()
+  }
+});
+
 export default defineDb({
-  tables: { Users, PluginStorage },
+  tables: { Users, PluginStorage, PluginsPath },
 })
