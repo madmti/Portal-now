@@ -31,7 +31,7 @@ export default function PluginLoader({
 				let Component;
 				if (mode === 'production') {
 					const { default: com } = await import(
-						/* @vite-ignore */ `/plugins/${plugin.component}.js`
+						/* @vite-ignore */ `/plugins/${plugin.id}.js`
 					);
 					Component = com;
 				} else {

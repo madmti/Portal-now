@@ -25,7 +25,7 @@ export default function PluginSettings({
 
 		if (mode === 'production') {
 			const { default: com } = await import(
-				/* @vite-ignore */ `/plugins/${plugin.settings}_settings.js`
+				/* @vite-ignore */ `/plugins/${plugin.id}_settings.js`
 			);
 			Component = com;
 		} else {
