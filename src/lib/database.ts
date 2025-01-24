@@ -42,5 +42,5 @@ export async function getPlugins({ on_production, on_settings, user_plugins }: {
             ...plugin,
             [on_settings ? 'settings' : 'component']: `/${plugin_path}`,
         }
-    });
+    }).filter((plug) => on_settings ? !!plug.settings : !!plug.component);
 }
