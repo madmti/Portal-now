@@ -3,7 +3,7 @@ import GeneralSideBar from '@components/home/GeneralSideBar.astro';
 import PluginLoader from '@components/home/PluginLoader';
 import DashboardLayout from '@layouts/DashboardLayout.astro';
 import { getPluginStorage } from '@lib/database';
-import { plugins } from '@lib/plugins';
+import { findPluginPathById, plugins } from '@lib/plugins';
 import { getPublicUserData } from '@lib/user';
 
 const mode = import.meta.env.MODE as 'development' | 'production';
@@ -18,6 +18,16 @@ const user_sections = Object.keys(user.plugins).filter(
 const user_preferences = user.preferences;
 const public_user_data = getPublicUserData(user);
 const plugins_storage = await getPluginStorage(user.uid);
+let plugin_paths: Record<string, string> = {};
+if (mode === 'production') {
+	for (const plugin of user_plugins) {
+		const path = findPluginPathById(plugin.id);
+		if (path !== null) {
+			plugin_paths[plugin.id] = path;
+		}
+	}
+}
+
 ---
 
 <DashboardLayout>
@@ -41,6 +51,7 @@ const plugins_storage = await getPluginStorage(user.uid);
 				user_plugins={user_plugins}
 				public_user_data={public_user_data}
 				plugins_storage={plugins_storage}
+				plugins_path={plugin_paths}
 				client:only="preact"
 			/>
 		</section>
