@@ -1,18 +1,16 @@
 import { community_plugins } from "../plugins/community_plugins";
 import { UniTrackPlugins } from "../plugins/UniTrack/config";
 import type { StorageAPIBody } from "pages/api/plugins/storage_api";
-import { readdirSync } from 'fs';
-import { resolve } from 'path';
 
 export function findPluginPathById(pluginId: string) {
     const pluginPrefix = `_$!plugin_component_${pluginId}`;
-    const pluginDir = resolve('dist', '_astro');
-    const files = readdirSync(pluginDir);
+    const files = import.meta.glob('/_astro/*.js', { eager: true });
   
-    const pluginFile = files.find(file => file.startsWith(pluginPrefix) && file.endsWith('.js'));
-  
-    if (pluginFile) {
-      return `/_astro/${pluginFile}`;
+    for (const filePath in files) {
+      const fileName = filePath.split('/').pop();
+      if (fileName && fileName.startsWith(pluginPrefix) && fileName.endsWith('.js')) {
+        return `/_astro/${fileName}`;
+      }
     }
   
     return null;
