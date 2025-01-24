@@ -52,7 +52,7 @@ export default function pluginsIntegration() {
                   outputMap[assetInfo.name] = fileName;
                 }
               }
-              await writeFile(resolve('dist', 'output-map.json'), JSON.stringify(outputMap, null, 2));
+              await writeFile(resolve('tmp', 'output-map.json'), JSON.stringify(outputMap, null, 2));
             },
           },
         ];
@@ -63,7 +63,7 @@ export default function pluginsIntegration() {
       'astro:build:done': async ({ dir, logger }: any) => {
         await mkdir(resolve(dir.pathname, 'plugins'), { recursive: true });
         const outputDir = resolve(dir.pathname, 'plugins');
-        const outputMap = JSON.parse(await readFile(resolve('dist', 'output-map.json'), 'utf-8'));
+        const outputMap = JSON.parse(await readFile(resolve('tmp', 'output-map.json'), 'utf-8'));
 
         for (const [pluginId, paths] of Object.entries(plugins)) {
           const pluginCompiledPath = outputMap[pluginId];
