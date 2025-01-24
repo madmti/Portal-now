@@ -13,6 +13,7 @@ export async function getPluginStorage(user_uid: string) {
 }
 
 export async function getPluginsPaths(plugin_ids: string[]) {
+    if (!plugin_ids.length) return {};
     const plugins_paths = await db.select().from(PluginsPath).where(inArray(PluginsPath.id, plugin_ids));
     return plugins_paths.reduce((acc, plugin_path) => {
         acc[plugin_path.id] = plugin_path.path;
