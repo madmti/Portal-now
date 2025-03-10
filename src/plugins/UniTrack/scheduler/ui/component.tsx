@@ -15,9 +15,8 @@ function EmptyScheduleKey({
 	return (
 		<div
 			tabIndex={0}
-			class={`group timeline-end timeline-box collapse collapse-close p-0 bg-base-200 max-w-[350px] ${
-				isActual ? 'border-primary' : 'border-neutral-500'
-			}`}
+			class={`group timeline-end timeline-box collapse collapse-close p-0 bg-base-200 max-w-[350px] ${isActual ? 'border-primary' : 'border-neutral-500'
+				}`}
 		>
 			<div className="collapse-title flex justify-between items-center">
 				<h1 class="text-lg text-neutral-500">Libre</h1>
@@ -42,9 +41,8 @@ function OneScheduleKey({
 	return (
 		<div
 			tabIndex={0}
-			class={`group timeline-end timeline-box collapse p-0 bg-base-200 max-w-[350px] ${
-				isActual ? 'border-primary' : 'border-neutral-500'
-			}`}
+			class={`group timeline-end timeline-box collapse p-0 bg-base-200 max-w-[350px] ${isActual ? 'border-primary' : 'border-neutral-500'
+				}`}
 		>
 			<div className="collapse-title flex justify-between items-center">
 				<h1 class={`text-lg ${isActual ? 'text-primary' : ''}`}>
@@ -77,9 +75,8 @@ function MultipleScheduleKey({
 	return (
 		<div
 			tabIndex={0}
-			class={`group timeline-end timeline-box collapse p-0 bg-base-200 max-w-[350px] ${
-				isActual ? 'border-primary' : 'border-neutral-500'
-			}`}
+			class={`group timeline-end timeline-box collapse p-0 bg-base-200 max-w-[350px] ${isActual ? 'border-primary' : 'border-neutral-500'
+				}`}
 		>
 			<div className="collapse-title flex justify-between items-center">
 				<h1 class="text-lg text-warning">
@@ -151,7 +148,7 @@ export default function Scheduler({
 						(ev_code) => schedule_by_event_code[ev_code]
 					);
 					const time_range = sistem[key]
-						.map(({ h, m }) => `${h}:${m}`)
+						.map(({ h, m }) => `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`)
 						.join(' - ');
 
 					return (
