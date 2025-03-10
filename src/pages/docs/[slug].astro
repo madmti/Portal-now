@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import { getCollection } from 'astro:content';
-import DocLayout from '../../layouts/DocLayout.astro';
+import DocLayout from '@layouts/DocLayout.astro';
 
 export const prerender = true;
 export const getStaticPaths = (async () => {
@@ -19,11 +19,12 @@ export const getStaticPaths = (async () => {
 
 const { doc } = Astro.props;
 const { Content } = await render(doc);
-const allDocs = await getCollection('docs');
+const allDocs = Array.from(await getCollection('docs'));
+allDocs.sort((doc_a, doc_b) => doc_a.slug.localeCompare(doc_b.slug));
 ---
 
 <DocLayout>
-	<main id="doc-content-wrapper" class="p-8 w-full" slot="content">
+	<main id="doc-content-wrapper" class="p-8 w-full overflow-y-auto" slot="content">
 		<header class="w-full flex items-center justify-between mb-4">
 			<h1 class="title">{doc.data.title}</h1>
 			<p class="badge badge-primary max-sm:hidden">{doc.data.last_update}</p>

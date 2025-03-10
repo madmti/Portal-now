@@ -1,0 +1,16 @@
+---
+import PluginDocLayout from '@layouts/PluginDocLayout.astro';
+import { getCollection } from 'astro:content';
+import { plugins } from '@lib/plugins';
+export const prerender = false;
+
+const { slug } = Astro.params;
+const collection = await getCollection('plugins');
+const doc = await collection.find((doc) => doc.slug === slug)?.render();
+const plugin = plugins[slug ?? ''];
+---
+
+<PluginDocLayout plugin={plugin} last_update={doc?.remarkPluginFrontmatter?.date}>
+	{doc && <doc.Content />}
+	{!doc && <p>Plugin not found</p>}
+</PluginDocLayout>

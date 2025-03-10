@@ -45,6 +45,13 @@ export default function SignInEmail() {
 			if (response.redirected) {
 				window.location.assign(response.url);
 			}
+			if (!response.ok) {
+				setActive(false);
+				setError(await response.text());
+				setTimeout(() => {
+					setError('');
+				}, 2500);
+			}
 		} catch (error: any) {
 			setActive(false);
 			setError(error.message);

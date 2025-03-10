@@ -1,0 +1,70 @@
+---
+import type { tPlugin } from '@lib/plugins';
+import DashboardLayout from './DashboardLayout.astro';
+import AddPlugin from '@components/home/addPlugin';
+import GeneralSideBar from '@components/home/GeneralSideBar.astro';
+
+interface Props {
+	plugin: tPlugin;
+	last_update: string;
+}
+
+const { plugin, last_update } = Astro.props;
+const { user } = Astro.locals;
+const user_sections = Object.keys(user.plugins);
+const { name, icon, storage_group, default_storage, version, extension_group } =
+	plugin;
+
+---
+
+<DashboardLayout>
+	<div slot="content" class="w-full h-full flex flex-col gap-4 p-4">
+		<header class="flex justify-between">
+			<div class="flex items-center gap-4">
+				<img src={`/icons/${icon}`} alt={name} class="w-12 h-12" />
+				<h1 class="text-3xl font-bold">
+					{name}
+					{
+						!!version && (
+							<small class="text-neutral-500 text-lg">v{version}</small>
+						)
+					}
+				</h1>
+			</div>
+			<AddPlugin
+				client:only="preact"
+				id={plugin.id}
+				storage_group={storage_group}
+				default_storage={default_storage}
+				user_sections={user_sections}
+				plugins={user.plugins}
+			/>
+		</header>
+		<div>
+			<h2 class="text-2xl font-bold">Descripcion</h2>
+			<p class="text-lg">{plugin.description}</p>
+			{
+				!!extension_group && (
+					<span class="text-xs py-2 badge badge-outline badge-accent">
+						{extension_group}
+					</span>
+				)
+			}
+			<h3 class="text-2xl font-bold mt-2">Ultima actualizacion del documento</h3>
+			<p class="text-lg text-accent">{last_update}</p>
+		</div>
+		<span class="divider m-0 h-0"></span>
+		<main id="doc-small-content-wrapper">
+			<slot />
+		</main>
+	</div>
+	<GeneralSideBar
+		slot="sidebar"
+		main_links={[
+			['Dashboard', '/home/dashboard/'],
+			['Plugins', '/home/plugins/'],
+			['Configuracion', '/home/settings/'],
+			['Documentacion', '/docs/001_intro/'],
+		]}
+	/>
+</DashboardLayout>

@@ -2,15 +2,8 @@
 
 interface ImportMetaEnv {
     readonly PUBLIC_VERCEL_URL: string
-    readonly PUBLIC_FIREBASE_PRIVATE_KEY_ID: string;
-    readonly PUBLIC_FIREBASE_PRIVATE_KEY: string;
-    readonly PUBLIC_FIREBASE_PROJECT_ID: string;
-    readonly PUBLIC_FIREBASE_CLIENT_EMAIL: string;
-    readonly PUBLIC_FIREBASE_CLIENT_ID: string;
-    readonly PUBLIC_FIREBASE_AUTH_URI: string;
-    readonly PUBLIC_FIREBASE_TOKEN_URI: string;
-    readonly PUBLIC_FIREBASE_AUTH_CERT_URL: string
-    readonly PUBLIC_FIREBASE_CLIENT_CERT_URL: string;
+    readonly PUBLIC_FIREBASE_CREDENTIALS: string;
+    readonly PROD?: boolean;
 }
 
 declare namespace App {
@@ -20,6 +13,14 @@ declare namespace App {
              * The user's `uid`.
              */
             readonly uid: string;
+            /**
+             * The user's enabled plugins.
+             */
+            readonly plugins: Record<string, string[]>;
+            /**
+             * The user's preferences.
+             */
+            readonly preferences: Record<string, any>;
             /**
              * The user's primary email, if set.
              */
@@ -94,12 +95,6 @@ declare namespace App {
              * The multi-factor related properties for the current user, if available.
              */
             readonly multiFactor?: MultiFactorSettings;
-            /**
-             * Returns a JSON-serializable representation of this object.
-             *
-             * @returns A JSON-serializable representation of this object.
-             */
-            toJSON(): object;
         };
     }
 }

@@ -1,0 +1,35 @@
+---
+import GeneralSideBar from '@components/home/GeneralSideBar.astro';
+import PluginCard from '@components/home/PluginCard.astro';
+import DashboardLayout from '@layouts/DashboardLayout.astro';
+import { plugins } from '@lib/plugins';
+
+const { user } = Astro.locals;
+const user_sections = Object.keys(user.plugins);
+---
+
+<DashboardLayout>
+	<div slot="content" class="flex flex-wrap justify-center gap-4 p-4">
+		{
+			Object.entries(plugins).map(([key, value]) => {
+				return (
+					<PluginCard
+						id={key}
+						plugin={value}
+						user_sections={user_sections}
+						plugins={user.plugins}
+					/>
+				);
+			})
+		}
+	</div>
+	<GeneralSideBar
+		slot="sidebar"
+		main_links={[
+			['Dashboard', '/home/dashboard/'],
+			['Configuracion', '/home/settings/'],
+			['Documentacion', '/docs/001_intro/'],
+		]}
+		sections={user_sections.filter((section) => section !== '_!$dashboard')}
+	/>
+</DashboardLayout>

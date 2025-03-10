@@ -1,0 +1,43 @@
+---
+import LogoutBtn from '../LogoutBtn.astro';
+
+interface Props {
+	sections?: string[];
+	main_links?: string[][];
+}
+
+const { sections, main_links } = Astro.props;
+---
+
+<div class="h-full flex flex-col justify-between">
+	<nav class="flex min-w-[240px] flex-col gap-1 p-2 text-base">
+		{!!main_links?.length && <span class="divider">Principal</span>}
+		{
+			!!main_links?.length &&
+				main_links.map(([link, href]) => (
+					<a
+						href={href}
+						role="button"
+						class="flex items-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start text-lg bg-[#0a0c0e2c] hover:bg-neutral"
+					>
+						{link}
+					</a>
+				))
+		}
+		{!!sections?.length && <span class="divider">Secciones</span>}
+		{
+			!!sections?.length &&
+				sections.map((section) => (
+					<a
+						href={`/home/dashboard/${section}/`}
+						role="button"
+						class="flex items
+					-center w-full px-4 py-2 transition-all rounded-lg outline-none text-start text-lg bg-[#0a0c0e2c] hover:bg-neutral"
+					>
+						{section}
+					</a>
+				))
+		}
+	</nav>
+	<LogoutBtn />
+</div>
